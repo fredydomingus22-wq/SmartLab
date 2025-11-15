@@ -1,9 +1,69 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const email = String(formData.get("email") || "").trim();
+    const password = String(formData.get("password") || "").trim();
+
+    try {
+      const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+      const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+      const supabase = createSupabaseBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        setError(signInError.message || "Failed to sign in");
+        setLoading(false);
+        return;
+      }
+
+      const user = data.user;
+      if (!user) {
+        setError("No user returned from authentication");
+        setLoading(false);
+        return;
+      }
+
+      // Minimal session cookie used across the app. Role is set to a default value
+      // A more complete implementation should fetch the user's app role from the DB
+      const sessionUser = {
+        id: user.id,
+        email: user.email,
+        role: "auditor_readonly",
+      };
+
+      document.cookie = `sb-user=${encodeURIComponent(JSON.stringify(sessionUser))}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=lax`;
+
+      // Redirect to dashboard after sign in
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err?.message || String(err));
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-6">
       <Card className="w-full max-w-md">
@@ -11,16 +71,17 @@ export default function SignInPage() {
           <CardTitle>Sign in to Smart Lab</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="grid gap-4">
+          <form className="grid gap-4" onSubmit={handleSubmit}>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required />
+              <Input id="email" name="email" type="email" required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input id="password" name="password" type="password" required />
             </div>
-            <Button type="submit">Sign In</Button>
+            {error ? <div className="text-destructive">{error}</div> : null}
+            <Button type="submit" disabled={loading}>{loading ? "Signing in..." : "Sign In"}</Button>
           </form>
         </CardContent>
       </Card>
