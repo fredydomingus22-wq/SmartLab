@@ -24,17 +24,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid access token" }, { status: 401 });
     }
 
-    // Lookup application role from `users` table
-    const { data: appUser, error: appUserError } = await supabase
+    // Lookup application role from `users` table. If user record does not
+    // exist, create it with the default role (auditor_readonly). This ensures
+    // app-level role mapping exists on first sign-in.
+    const DEFAULT_ROLE = "auditor_readonly";
+
+    // try find an existing user mapping
+    const { data: existingUser } = await supabase
       .from("users")
       .select("role_id")
       .eq("id", user.id)
       .maybeSingle();
 
-    let roleName = "auditor_readonly";
-    if (appUser && appUser.role_id) {
-      const { data: roleRow } = await supabase.from("roles").select("name").eq("id", appUser.role_id).maybeSingle();
+    let roleName = DEFAULT_ROLE;
+
+    if (existingUser?.role_id) {
+      const { data: roleRow } = await supabase.from("roles").select("name").eq("id", existingUser.role_id).maybeSingle();
       if (roleRow?.name) roleName = roleRow.name;
+    } else {
+      // ensure the default role exists and get its id
+      const { data: roleRow } = await supabase.from("roles").select("id,name").eq("name", DEFAULT_ROLE).maybeSingle();
+      const roleId = roleRow?.id;
+      if (roleId) {
+        // upsert user mapping with the default role
+        await supabase.from("users").upsert({ id: user.id, role_id: roleId }, { onConflict: "id" });
+        roleName = DEFAULT_ROLE;
+      }
     }
 
     const sessionUser = {
