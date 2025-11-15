@@ -1,9 +1,5 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-// NÃO use "use client" neste arquivo!
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-export function createSupabaseBrowserClient() {
+export function createSupabaseBrowserClient(SUPABASE_URL: string, SUPABASE_ANON_KEY: string) {
   return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
