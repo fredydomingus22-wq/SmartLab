@@ -38,22 +38,27 @@ export default function SignInPage() {
         return;
       }
 
-      const user = data.user;
-      if (!user) {
-        setError("No user returned from authentication");
+      const session = (data as any).session;
+      const accessToken = session?.access_token;
+      if (!accessToken) {
+        setError("Failed to obtain access token");
         setLoading(false);
         return;
       }
 
-      // Minimal session cookie used across the app. Role is set to a default value
-      // A more complete implementation should fetch the user's app role from the DB
-      const sessionUser = {
-        id: user.id,
-        email: user.email,
-        role: "auditor_readonly",
-      };
+      // Inform server to set an HttpOnly cookie with the user's role
+      const resp = await fetch("/api/auth/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: accessToken }),
+      });
 
-      document.cookie = `sb-user=${encodeURIComponent(JSON.stringify(sessionUser))}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=lax`;
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}));
+        setError(body?.error || "Failed to set session cookie");
+        setLoading(false);
+        return;
+      }
 
       // Redirect to dashboard after sign in
       router.push("/dashboard");
