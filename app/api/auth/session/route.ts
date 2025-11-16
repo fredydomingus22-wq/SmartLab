@@ -58,10 +58,11 @@ export async function POST(req: Request) {
       role: roleName,
     };
 
-    // Set HttpOnly cookie (1 week)
+    // Set HttpOnly cookie (1 week) with Strict SameSite in production
     const cookieVal = encodeURIComponent(JSON.stringify(sessionUser));
     const secure = process.env.NODE_ENV === "production";
-    const cookie = `sb-user=${cookieVal}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 7}${secure ? "; Secure" : ""}`;
+    const sameSite = secure ? "SameSite=Strict" : "SameSite=Lax";
+    const cookie = `sb-user=${cookieVal}; Path=/; HttpOnly; ${sameSite}; Max-Age=${60 * 60 * 24 * 7}${secure ? "; Secure" : ""}`;
 
     const res = NextResponse.json({ ok: true });
     res.headers.set("Set-Cookie", cookie);
