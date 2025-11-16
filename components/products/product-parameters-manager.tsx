@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { ProductParameterForm, type ProductParameterFormValues } from "@/components/forms/product-parameter-form";
 import { Button } from "@/components/ui/button";
 
-interface AssignedParameter {
+export interface AssignedParameter {
   id: string;
   parameter_id: string;
   min_value: number | null;
@@ -84,12 +84,16 @@ export function ProductParametersManager({
                 </td>
               </tr>
             ) : (
-              assigned.map((link) => (
-                <tr key={link.id}>
-                  <td className="px-4 py-3 text-sm font-medium">
-                    {link.parameters?.name ?? "Unknown"}
+              assigned.map((link) => {
+                const parameter = Array.isArray(link.parameters)
+                  ? link.parameters[0] ?? null
+                  : link.parameters;
+                return (
+                  <tr key={link.id}>
+                    <td className="px-4 py-3 text-sm font-medium">
+                    {parameter?.name ?? "Unknown"}
                     <span className="ml-1 text-xs text-muted-foreground">
-                      ({link.parameters?.unit ?? ""})
+                      ({parameter?.unit ?? ""})
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm">
@@ -112,7 +116,8 @@ export function ProductParametersManager({
                     </Button>
                   </td>
                 </tr>
-              ))
+                );
+              })
             )}
           </tbody>
         </table>

@@ -3,7 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { ProductEditor } from "@/components/products/product-editor";
 import type { ProductFormValues } from "@/components/forms/product-form";
-import { ProductParametersManager } from "@/components/products/product-parameters-manager";
+import {
+  ProductParametersManager,
+  type AssignedParameter,
+} from "@/components/products/product-parameters-manager";
 
 interface ProductDetailPageProps {
   params: { id: string };
@@ -50,8 +53,21 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
     active: product.active ?? true,
   };
 
+  const normalizedAssigned: AssignedParameter[] = (assigned ?? []).map((link) => ({
+    id: link.id,
+    parameter_id: link.parameter_id,
+    min_value: link.min_value,
+    target_value: link.target_value,
+    max_value: link.max_value,
+    order_index: link.order_index,
+    required: link.required,
+    parameters: Array.isArray(link.parameters)
+      ? link.parameters[0] ?? null
+      : link.parameters ?? null,
+  }));
+
   const availableParameters = (parameters ?? []).filter(
-    (parameter) => !(assigned ?? []).some((link) => link.parameter_id === parameter.id)
+    (parameter) => !normalizedAssigned.some((link) => link.parameter_id === parameter.id)
   );
 
   return (
@@ -75,7 +91,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
         <CardContent>
           <ProductParametersManager
             productId={product.id}
-            assigned={assigned ?? []}
+            assigned={normalizedAssigned}
             availableParameters={availableParameters}
           />
         </CardContent>
