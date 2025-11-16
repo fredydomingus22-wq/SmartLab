@@ -1,8 +1,10 @@
+/// <reference types="node" />
+
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const SUPABASE_URL = (globalThis as any)['process']?.env?.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_SERVICE_ROLE = (globalThis as any)['process']?.env?.SUPABASE_SERVICE_ROLE_KEY!;
 
 export async function POST(req: Request) {
   try {
@@ -60,7 +62,7 @@ export async function POST(req: Request) {
 
     // Set HttpOnly cookie (1 week) with Strict SameSite in production
     const cookieVal = encodeURIComponent(JSON.stringify(sessionUser));
-    const secure = process.env.NODE_ENV === "production";
+    const secure = (globalThis as any)['process']?.env?.NODE_ENV === "production";
     const sameSite = secure ? "SameSite=Strict" : "SameSite=Lax";
     const cookie = `sb-user=${cookieVal}; Path=/; HttpOnly; ${sameSite}; Max-Age=${60 * 60 * 24 * 7}${secure ? "; Secure" : ""}`;
 
