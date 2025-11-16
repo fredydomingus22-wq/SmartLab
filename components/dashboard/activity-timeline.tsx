@@ -1,4 +1,4 @@
-interface ActivityItem {
+export interface ActivityItem {
   time: string;
   title: string;
   meta: string;

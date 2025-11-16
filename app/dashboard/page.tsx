@@ -1,6 +1,9 @@
 import { HeroBanner } from "@/components/dashboard/hero-banner";
 import { KpiCard } from "@/components/dashboard/kpi-card";
-import { ActivityTimeline } from "@/components/dashboard/activity-timeline";
+import {
+  ActivityTimeline,
+  type ActivityItem,
+} from "@/components/dashboard/activity-timeline";
 import { TrendChart } from "@/components/charts/trend-chart";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Button } from "@/components/ui/button";
@@ -26,7 +29,7 @@ const labQueue = [
   { lot: "RM-014", product: "Concentrado", analyst: "P. Silva", status: "out" },
 ];
 
-const timelineData = [
+const timelineData: ActivityItem[] = [
   { time: "07:30", title: "Receção matéria-prima", meta: "Fornecedor CitrusPrime", status: "info" },
   { time: "09:10", title: "Analise FP", meta: "Brix fora de alvo", status: "warning" },
   { time: "11:45", title: "Validação biométrica", meta: "Liberação PCC 03", status: "ok" },
