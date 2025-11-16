@@ -3,26 +3,12 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import { Sidebar } from "@/components/layout/sidebar";
+import { AppHeader } from "@/components/layout/app-header";
+import { RightRail } from "@/components/layout/right-rail";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
-const NAV_LINKS = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/production-lots", label: "Lotes Pai" },
-  { href: "/intermediate-lots", label: "Intermédios" },
-  { href: "/finished-lots", label: "Produtos Finais" },
-  { href: "/traceability", label: "Rastreabilidade" },
-  { href: "/lab-tests", label: "Laboratório" },
-  { href: "/products", label: "Produtos" },
-  { href: "/parameters", label: "Parâmetros" },
-  { href: "/product-specs", label: "Specs" },
-  { href: "/nc", label: "NC" },
-  { href: "/audits", label: "Auditorias" },
-  { href: "/documents", label: "Documentos" },
-  { href: "/trainings", label: "Treinamentos" },
-  { href: "/food-safety/prp", label: "PRP" },
-  { href: "/food-safety/oprp", label: "OPRP" },
-  { href: "/food-safety/pcc", label: "PCC" },
-];
+const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "SMART LAB",
@@ -36,33 +22,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased"
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="flex min-h-screen">
-            <aside className="hidden w-64 border-r bg-muted/30 p-6 md:block">
-              <div className="space-y-6">
-                <div>
-                  <p className="text-sm font-semibold text-muted-foreground">SMART LAB</p>
-                  <p className="text-base font-bold">LIMS/QMS</p>
-                </div>
-                <nav className="space-y-2">
-                  {NAV_LINKS.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </nav>
+      <body className={cn("min-h-screen bg-background text-foreground", plusJakarta.variable)}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <div className="relative min-h-screen overflow-hidden bg-[#030712]">
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute -left-24 top-[-180px] h-[420px] w-[420px] rounded-full bg-[#ff8c4d33] blur-[200px]" />
+              <div className="absolute right-0 top-1/3 h-[320px] w-[320px] rounded-full bg-[#1d4ed833] blur-[200px]" />
+              <div className="absolute inset-x-0 bottom-[-200px] mx-auto h-[360px] w-[720px] rounded-full bg-[#0ea5e933] blur-[220px]" />
+            </div>
+            <div className="relative mx-auto flex min-h-screen max-w-[1600px] gap-6 px-4 py-6 lg:px-8 lg:py-10">
+              <Sidebar />
+              <div className="flex min-h-full flex-1 flex-col gap-6">
+                <AppHeader />
+                <main className="flex-1 rounded-3xl border border-white/10 bg-white/[0.03] p-4 text-white shadow-[0_25px_120px_rgba(4,7,18,0.65)] backdrop-blur-2xl lg:p-8">
+                  {children}
+                </main>
               </div>
-            </aside>
-            <main className="flex-1 overflow-y-auto p-4 md:p-8">{children}</main>
+              <RightRail />
+            </div>
           </div>
         </ThemeProvider>
       </body>
