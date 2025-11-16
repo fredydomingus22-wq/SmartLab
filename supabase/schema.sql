@@ -90,12 +90,19 @@ begin
 end;
 $$;
 
-alter table if exists products
-    add column if not exists category text,
-    add column if not exists line text,
-    add column if not exists active boolean not null default true,
-    add column if not exists stage product_stage not null default 'final',
-    add column if not exists updated_at timestamptz not null default now();
+create table products (
+    id uuid primary key default gen_random_uuid(),
+    name text not null,
+    code text not null unique,
+    type product_type not null,
+    stage product_stage not null default 'final',
+    category text,
+    line text,
+    active boolean not null default true,
+    status text not null default 'active',
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
 
 do $$
 begin
@@ -107,15 +114,6 @@ begin
     for each row execute function smartlab.set_updated_at();
   end if;
 end $$;
-
-create table products (
-    id uuid primary key default gen_random_uuid(),
-    name text not null,
-    code text not null unique,
-    type product_type not null,
-    status text not null default 'active',
-    created_at timestamptz not null default now()
-);
 
 create table parameters (
     id uuid primary key default gen_random_uuid(),
