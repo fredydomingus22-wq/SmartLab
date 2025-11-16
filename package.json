@@ -2,9 +2,6 @@
   "name": "smartlab-app",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/ssr": "file:packages/ssr",
-    "@supabase/supabase-js": "file:packages/supabase-js",
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
