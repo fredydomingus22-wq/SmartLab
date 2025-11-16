@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@/lib/zod-resolver";
@@ -28,11 +26,6 @@ interface ProductionLotFormProps {
 }
 
 export function ProductionLotForm({ products, lines, shifts, onSubmit }: ProductionLotFormProps) {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const form = useForm<ProductionLotFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -41,43 +34,7 @@ export function ProductionLotForm({ products, lines, shifts, onSubmit }: Product
   });
 
   async function handleSubmit(values: ProductionLotFormValues) {
-    setError(null);
-    setSuccess(false);
-    setLoading(true);
-
-    try {
-      if (onSubmit) {
-        await onSubmit(values);
-      } else {
-        // Default: call API endpoint
-        const resp = await fetch("/api/production-lots", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            production_lot_code: values.productionLotCode,
-            product_id: values.productId,
-            line_id: values.lineId || null,
-            shift_id: values.shiftId || null,
-          }),
-        });
-
-        if (!resp.ok) {
-          const body = await resp.json().catch(() => ({}));
-          setError(body?.error || "Failed to create production lot");
-          setLoading(false);
-          return;
-        }
-
-        setSuccess(true);
-        setTimeout(() => {
-          router.push("/production-lots");
-        }, 1000);
-      }
-    } catch (err: any) {
-      setError(err?.message || String(err));
-    } finally {
-      setLoading(false);
-    }
+    await onSubmit?.(values);
   }
 
   return (
@@ -127,10 +84,8 @@ export function ProductionLotForm({ products, lines, shifts, onSubmit }: Product
           <option value="completed">Completed</option>
         </Select>
       </div>
-      {error && <div className="text-destructive text-sm">{error}</div>}
-      {success && <div className="text-green-600 text-sm">Production lot created successfully! Redirecting...</div>}
-      <Button type="submit" disabled={loading} className="justify-self-start">
-        {loading ? "Creating..." : "Save Production Lot"}
+      <Button type="submit" className="justify-self-start">
+        Save Production Lot
       </Button>
     </form>
   );

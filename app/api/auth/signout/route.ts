@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const SUPABASE_URL = (globalThis as any).process?.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_SERVICE_ROLE = (globalThis as any).process?.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export async function POST(_: Request) {
   try {
@@ -27,7 +27,7 @@ export async function POST(_: Request) {
     console.error("Error during signout:", err);
   }
 
-  const secure = process.env.NODE_ENV === "production";
+  const secure = (globalThis as any).process?.env.NODE_ENV === "production";
   const sameSite = secure ? "SameSite=Strict" : "SameSite=Lax";
   const cookie = `sb-user=; Path=/; HttpOnly; ${sameSite}; Max-Age=0${secure ? "; Secure" : ""}`;
   const res = NextResponse.json({ ok: true });
