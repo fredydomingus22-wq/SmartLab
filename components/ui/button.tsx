@@ -51,10 +51,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const classes = cn(buttonVariants({ variant, size, className }));
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement, {
-        className: cn((children as any).props?.className, classes),
+      const childElement = children as React.ReactElement<
+        Record<string, unknown>
+      >;
+
+      return React.cloneElement(childElement, {
+        className: cn(childElement.props?.className, classes),
         ref,
-        ...props,
+        ...(props as Record<string, unknown>),
       });
     }
 
