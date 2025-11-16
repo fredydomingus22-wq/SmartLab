@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { type AppRole } from "@/lib/utils";
+import { createServerClient } from "@supabase/ssr";
+import { type AppRole, extractRoleFromUser } from "@/lib/utils";
 
 const protectedRoutes: Record<string, AppRole[]> = {
   "/production-lots/create": ["admin_root", "plant_manager", "qa_supervisor"],
@@ -8,7 +9,7 @@ const protectedRoutes: Record<string, AppRole[]> = {
   "/lab-tests/create": ["admin_root", "qa_supervisor", "lab_tech"],
 };
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const matchedRoute = Object.entries(protectedRoutes).find(([route]) =>
     pathname.startsWith(route)
@@ -19,22 +20,54 @@ export function middleware(request: NextRequest) {
   }
 
   const [, allowedRoles] = matchedRoute;
-  const sessionCookie = request.cookies.get("sb-user");
-  if (!sessionCookie?.value) {
-    return NextResponse.redirect(new URL("/auth/sign-in", request.url));
-  }
+  const response = NextResponse.next();
 
   try {
-    const user = JSON.parse(sessionCookie.value) as { role: AppRole };
-    if (!allowedRoles.includes(user.role)) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error("Supabase environment variables are not configured for middleware checks.");
+      return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+    }
+
+    const supabase = createServerClient(
+      supabaseUrl,
+      supabaseAnonKey,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value;
+          },
+          set(name: string, value: string, options) {
+            response.cookies.set({ name, value, ...options });
+          },
+          remove(name: string, options) {
+            response.cookies.delete({ name, ...options });
+          },
+        },
+      }
+    );
+
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error || !user) {
+      return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+    }
+
+    const role = extractRoleFromUser(user);
+    if (!role || !allowedRoles.includes(role)) {
       return NextResponse.redirect(new URL("/auth/forbidden", request.url));
     }
+
+    return response;
   } catch (error) {
-    console.error("Invalid session cookie", error);
+    console.error("Supabase middleware guard failed", error);
     return NextResponse.redirect(new URL("/auth/sign-in", request.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
