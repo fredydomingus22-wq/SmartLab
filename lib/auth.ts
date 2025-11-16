@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
-import { createSupabaseServerClient } from "@/lib/supabase";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 import type { AppRole } from "@/lib/utils";
 import { extractRoleFromUser, hasRequiredRole } from "@/lib/utils";
 

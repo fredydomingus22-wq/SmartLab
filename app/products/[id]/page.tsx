@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createSupabaseServerClient } from "@/lib/supabase";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { ProductEditor } from "@/components/products/product-editor";
 import type { ProductFormValues } from "@/components/forms/product-form";
 import { ProductParametersManager } from "@/components/products/product-parameters-manager";

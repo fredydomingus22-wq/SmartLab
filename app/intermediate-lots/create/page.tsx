@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { DynamicAnalysisForm } from "@/components/forms/dynamic-analysis-form";
-import { createSupabaseServerClient } from "@/lib/supabase";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export default async function CreateIntermediateLotPage() {
   let products: { id: string; name: string; stage?: string | null }[] = [];

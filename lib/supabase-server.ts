@@ -14,11 +14,11 @@ export function createSupabaseServerClient(): SupabaseClient {
         return cookieStore.get(name)?.value;
       },
       set() {
-        // The App Router's `cookies()` helper is read-only in server components.
-        // Route handlers should create their own Supabase client if they need to mutate cookies.
+        // App Router server components cannot mutate cookies.
+        // Route handlers should instantiate their own client if they need write access.
       },
       remove() {
-        // See comment above – server components cannot mutate cookies.
+        // Same as above – the read-only cookies helper blocks deletions.
       },
     },
   });
