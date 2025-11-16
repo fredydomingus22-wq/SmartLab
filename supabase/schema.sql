@@ -75,8 +75,19 @@ create type prp_frequency as enum ('daily', 'weekly', 'monthly', 'quarterly', 'b
 create type check_result as enum ('ok', 'not_ok');
 create type oprp_status as enum ('in_control', 'out_of_control');
 create type pcc_status as enum ('in_control', 'deviation', 'critical_failure');
-create type if not exists parameter_input_type as enum ('number', 'text', 'select', 'boolean');
-create type if not exists product_stage as enum ('intermediate', 'final');
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'parameter_input_type') then
+    create type parameter_input_type as enum ('number', 'text', 'select', 'boolean');
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'product_stage') then
+    create type product_stage as enum ('intermediate', 'final');
+  end if;
+end $$;
 
 -- Products & Specifications
 -- =============================
