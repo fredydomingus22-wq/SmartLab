@@ -1,0 +1,52 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dashBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0.55"/>
+    </linearGradient>
+    <filter id="glassDash">
+      <feDropShadow dx="0" dy="25" stdDeviation="35" flood-color="#010510" flood-opacity="0.75"/>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#dashBg)"/>
+  <rect x="40" y="40" width="220" height="820" rx="30" fill="rgba(15,23,42,0.75)" stroke="rgba(255,255,255,0.08)" filter="url(#glassDash)"/>
+  <text x="80" y="120" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" fill="#f8fafc">SMARTLAB</text>
+  <g font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#94a3b8">
+    <text x="80" y="170">Dashboard</text>
+    <text x="80" y="210">Lotes</text>
+    <text x="80" y="250">Laboratório</text>
+    <text x="80" y="290">NC &amp; 8D</text>
+    <text x="80" y="330">Food Safety</text>
+    <text x="80" y="370">Treinamentos</text>
+  </g>
+  <rect x="300" y="40" width="1060" height="820" rx="40" fill="rgba(15,23,42,0.65)" stroke="rgba(255,255,255,0.08)" filter="url(#glassDash)"/>
+  <rect x="340" y="70" width="980" height="200" rx="30" fill="url(#hero)"/>
+  <text x="380" y="140" font-family="'Plus Jakarta Sans', sans-serif" font-size="28" fill="#e0f2fe">Olá, Mariana · Planta Gaia</text>
+  <text x="380" y="180" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#e2e8f0">Resumo de qualidade · 12 Novembro 2025</text>
+  <rect x="360" y="310" width="220" height="150" rx="26" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.4)"/>
+  <rect x="600" y="310" width="220" height="150" rx="26" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.4)"/>
+  <rect x="840" y="310" width="220" height="150" rx="26" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.4)"/>
+  <rect x="1080" y="310" width="220" height="150" rx="26" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.4)"/>
+  <text x="380" y="350" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#94a3b8">NC abertas</text>
+  <text x="380" y="390" font-family="'Plus Jakarta Sans', sans-serif" font-size="40" font-weight="600" fill="#f8fafc">12</text>
+  <text x="620" y="350" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#94a3b8">Lotes em quarentena</text>
+  <text x="620" y="390" font-family="'Plus Jakarta Sans', sans-serif" font-size="40" font-weight="600" fill="#f8fafc">7</text>
+  <text x="860" y="350" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#94a3b8">Desvios PCC</text>
+  <text x="860" y="390" font-family="'Plus Jakarta Sans', sans-serif" font-size="40" font-weight="600" fill="#f8fafc">2</text>
+  <text x="1100" y="350" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#94a3b8">Taxa OOS</text>
+  <text x="1100" y="390" font-family="'Plus Jakarta Sans', sans-serif" font-size="40" font-weight="600" fill="#f8fafc">4.8%</text>
+  <rect x="360" y="490" width="620" height="300" rx="30" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.35)"/>
+  <text x="380" y="530" font-family="'Plus Jakarta Sans', sans-serif" font-size="18" fill="#f1f5f9">Tendência CO₂ · Linha 3</text>
+  <polyline points="380,700 460,640 540,660 620,600 700,620 780,580 860,590 940,560" fill="none" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <polyline points="380,720 460,690 540,710 620,650 700,640 780,620 860,640 940,610" fill="none" stroke="#f472b6" stroke-width="4" stroke-dasharray="12 8" stroke-linecap="round" opacity="0.8"/>
+  <rect x="1000" y="490" width="300" height="300" rx="30" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.35)"/>
+  <text x="1020" y="530" font-family="'Plus Jakarta Sans', sans-serif" font-size="18" fill="#f1f5f9">Fila do laboratório</text>
+  <text x="1030" y="570" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" fill="#94a3b8">· Lote final 24B — CO₂ / pH</text>
+  <text x="1030" y="600" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" fill="#94a3b8">· Intermediário SI-41 — Brix</text>
+  <text x="1030" y="630" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" fill="#94a3b8">· MP Açúcar — Umidade</text>
+  <text x="1030" y="690" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#38bdf8">+ 5 análises programadas</text>
+</svg>

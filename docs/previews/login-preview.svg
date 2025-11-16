@@ -1,0 +1,31 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.25)"/>
+      <stop offset="100%" stop-color="rgba(15,23,42,0.8)"/>
+    </linearGradient>
+    <filter id="blur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="35"/>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="35" stdDeviation="40" flood-color="#020617" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="160" cy="120" r="130" fill="#1d4ed8" opacity="0.35" filter="url(#blur)"/>
+  <circle cx="1040" cy="540" r="160" fill="#f472b6" opacity="0.4" filter="url(#blur)"/>
+  <rect x="360" y="120" width="480" height="435" rx="32" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="600" y="195" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="36" fill="#f8fafc" letter-spacing="0.05em">SMARTLAB</text>
+  <text x="600" y="230" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#cbd5f5">Industrial LIMS/QMS Access</text>
+  <rect x="420" y="270" width="360" height="58" rx="16" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.5)"/>
+  <text x="440" y="305" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#94a3b8">Email corporativo</text>
+  <rect x="420" y="350" width="360" height="58" rx="16" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.5)"/>
+  <text x="440" y="385" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#94a3b8">Senha / Passkey</text>
+  <rect x="420" y="430" width="360" height="60" rx="18" fill="#38bdf8"/>
+  <text x="600" y="468" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="18" font-weight="600" fill="#0f172a">Entrar com WebAuthn</text>
+  <text x="600" y="520" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" fill="#94a3b8">Verificação biométrica exigida para aprovação QA</text>
+</svg>
