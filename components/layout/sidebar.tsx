@@ -12,7 +12,7 @@ import {
   Layers,
   ClipboardCheck,
   BookOpenCheck,
-  FileChartColumn,
+  FileBarChart,
 } from "lucide-react";
 
 const NAV_LINKS = [
@@ -23,7 +23,7 @@ const NAV_LINKS = [
   { href: "/lab-tests", label: "Laboratório", icon: Beaker },
   { href: "/traceability", label: "Rastreabilidade", icon: ShieldCheck },
   { href: "/products", label: "Produtos", icon: ClipboardCheck },
-  { href: "/parameters", label: "Parâmetros", icon: FileChartColumn },
+  { href: "/parameters", label: "Parâmetros", icon: FileBarChart },
   { href: "/trainings", label: "Treinamentos", icon: BookOpenCheck },
 ];
 
