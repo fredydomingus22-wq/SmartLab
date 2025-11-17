@@ -16,9 +16,12 @@ const MOCK_TRACEABILITY = {
     { lot: "FP-2024-013", status: "released", expiry: "2025-05-01" },
   ],
   labTests: [
-    { test: "Finished Product QA", status: "in_spec", analyst: "A. Costa" },
+    { test: "Finished Product QA", status: "in_spec", analyst: "A. Costa", completedAt: "2024-05-12 14:30" },
+    { test: "CO₂ Micro Verification", status: "pending", analyst: "L. Nunes", completedAt: null },
   ],
-  nonConformities: [],
+  nonConformities: [
+    { code: "NC-2024-0007", trigger: "CO₂ drift", severity: "major", status: "in_progress" },
+  ],
   pccChecks: [
     { point: "Pasteurization Temperature", status: "in_control", lastCheck: "2024-05-12" },
   ],
@@ -114,6 +117,47 @@ export default function TraceabilityPage({ params }: TraceabilityPageProps) {
                 { header: "Last Check", accessor: "lastCheck" },
               ]}
               data={data.pccChecks}
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Lab Tests & Quality Gates</CardTitle>
+            <CardDescription>Latest analytical verifications tied to this lot</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SimpleTable
+              columns={[
+                { header: "Test", accessor: "test" },
+                { header: "Analyst", accessor: "analyst" },
+                { header: "Status", accessor: "status" },
+                {
+                  header: "Completed",
+                  accessor: (item) => item.completedAt ?? "Pending",
+                },
+              ]}
+              data={data.labTests}
+            />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Linked Non-Conformities</CardTitle>
+            <CardDescription>Escalations connected to this production window</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SimpleTable
+              columns={[
+                { header: "Code", accessor: "code" },
+                { header: "Trigger", accessor: "trigger" },
+                { header: "Severity", accessor: "severity" },
+                { header: "Status", accessor: "status" },
+              ]}
+              data={data.nonConformities}
+              emptyMessage="No non-conformities linked."
             />
           </CardContent>
         </Card>
