@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 
+import { I18nProvider } from "@/contexts/i18n-context";
 import Sidebar, { MobileSidebar } from "@/components/layout/Sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { cn } from "@/lib/utils";
@@ -21,8 +22,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <div className="flex min-h-screen bg-slate-950 text-slate-100">
-            <aside className="fixed inset-y-0 z-40 hidden w-[260px] shrink-0 md:flex">
+          <I18nProvider>
+            <div className="flex min-h-screen bg-slate-950 text-slate-100">
+              <aside className="fixed inset-y-0 z-40 hidden w-[260px] shrink-0 md:flex">
               <Sidebar />
             </aside>
             <div className="flex w-full flex-col md:pl-[260px]">
@@ -36,6 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <main className="flex-1 overflow-y-auto px-4 py-6 md:px-10">{children}</main>
             </div>
           </div>
+          </I18nProvider>
         </ThemeProvider>
       </body>
     </html>

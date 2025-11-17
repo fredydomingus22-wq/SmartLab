@@ -168,7 +168,9 @@ export default function FoodSafetyModulePage({ params }: ModulePageProps) {
           <Button variant="ghost" asChild>
             <Link href="/food-safety">Visão geral</Link>
           </Button>
-          <Button variant="primary">Registrar ocorrência</Button>
+          <Button variant="primary" asChild>
+            <Link href={`/food-safety/${moduleKey}/create`}>Registar Novo Controlo</Link>
+          </Button>
         </div>
       </div>
 

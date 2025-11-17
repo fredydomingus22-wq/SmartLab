@@ -1,133 +1,142 @@
 "use client";
 
 import Link from "next/link";
-
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@/lib/zod-resolver";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 
-const steps = [
-  {
-    id: "d1",
-    label: "D1",
-    title: "Equipe",
-    status: "Concluído",
-    variant: "success" as const,
-    fields: [
-      { id: "team", label: "Equipe responsável", placeholder: "QA, Produção...", value: "QA Manager, Supervisor" },
-    ],
-  },
-  {
-    id: "d2",
-    label: "D2",
-    title: "Descrição",
-    status: "Em progresso",
-    variant: "warning" as const,
-    fields: [
-      { id: "descr", label: "Resumo do problema", placeholder: "Detalhe o desvio", value: "Alarme metal detector PCC-14" },
-    ],
-  },
-  {
-    id: "d3",
-    label: "D3",
-    title: "Contenção",
-    status: "Pendente",
-    variant: "danger" as const,
-    fields: [
-      { id: "contain", label: "Ação imediata", placeholder: "Bloqueio, segregação", value: "Bloqueio PF-240915-21" },
-    ],
-  },
-  { id: "d4", label: "D4", title: "Causa raiz", status: "Pendente", variant: "danger" as const, fields: [] },
-  { id: "d5", label: "D5", title: "Ações permanentes", status: "Pendente", variant: "warning" as const, fields: [] },
-  { id: "d6", label: "D6", title: "Implementação", status: "Pendente", variant: "warning" as const, fields: [] },
-  { id: "d7", label: "D7", title: "Prevenção", status: "Pendente", variant: "warning" as const, fields: [] },
-  { id: "d8", label: "D8", title: "Reconhecimento", status: "Pendente", variant: "warning" as const, fields: [] },
+const stepStatus = z.enum(["pendente", "em_progresso", "concluido"]);
+type StepStatus = z.infer<typeof stepStatus>;
+
+const eightDSchema = z.object({
+  d1_team: z.string().min(1, "Campo obrigatório"),
+  d1_status: stepStatus,
+  d2_problem: z.string().min(1, "Campo obrigatório"),
+  d2_status: stepStatus,
+  d3_containment: z.string().min(1, "Campo obrigatório"),
+  d3_status: stepStatus,
+  d4_root_cause: z.string().min(1, "Campo obrigatório"),
+  d4_status: stepStatus,
+  d5_corrective_actions: z.string().min(1, "Campo obrigatório"),
+  d5_status: stepStatus,
+  d6_implementation: z.string().min(1, "Campo obrigatório"),
+  d6_status: stepStatus,
+  d7_prevention: z.string().min(1, "Campo obrigatório"),
+  d7_status: stepStatus,
+  d8_recognition: z.string().min(1, "Campo obrigatório"),
+  d8_status: stepStatus,
+  assinatura_responsavel: z.string().min(3, "Assinatura obrigatória para fechar o 8D."),
+});
+
+type EightDFormValues = z.infer<typeof eightDSchema>;
+
+const stepsConfig = [
+  { id: "d1", label: "D1", title: "Equipe", contentField: "d1_team", statusField: "d1_status" },
+  { id: "d2", label: "D2", title: "Descrição do Problema", contentField: "d2_problem", statusField: "d2_status" },
+  { id: "d3", label: "D3", title: "Ações de Contenção", contentField: "d3_containment", statusField: "d3_status" },
+  { id: "d4", label: "D4", title: "Causa Raiz", contentField: "d4_root_cause", statusField: "d4_status" },
+  { id: "d5", label: "D5", title: "Ações Corretivas", contentField: "d5_corrective_actions", statusField: "d5_status" },
+  { id: "d6", label: "D6", title: "Implementação e Validação", contentField: "d6_implementation", statusField: "d6_status" },
+  { id: "d7", label: "D7", title: "Prevenção", contentField: "d7_prevention", statusField: "d7_status" },
+  { id: "d8", label: "D8", title: "Reconhecimento da Equipe", contentField: "d8_recognition", statusField: "d8_status" },
 ];
 
-interface EightDPageProps {
-  params: { nc_id: string };
-}
+export default function EightDPage({ params }: { params: { nc_id: string } }) {
+  const form = useForm<EightDFormValues>({
+    resolver: zodResolver(eightDSchema),
+    defaultValues: {
+      d1_team: "QA Manager, Supervisor de Produção", d1_status: "concluido",
+      d2_problem: "Alarme de detetor de metais na Linha PET 2.", d2_status: "em_progresso",
+      d3_containment: "", d3_status: "pendente",
+      d4_root_cause: "", d4_status: "pendente",
+      d5_corrective_actions: "", d5_status: "pendente",
+      d6_implementation: "", d6_status: "pendente",
+      d7_prevention: "", d7_status: "pendente",
+      d8_recognition: "", d8_status: "pendente",
+      assinatura_responsavel: "",
+    },
+  });
 
-export default function EightDPage({ params }: EightDPageProps) {
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = form;
+  const statusValues = watch(stepsConfig.map(s => s.statusField as any));
+
+  async function onSubmit(values: EightDFormValues) { await Promise.resolve(values); }
+
+  const getStatusVariant = (status: StepStatus) => ({
+    pendente: "danger", em_progresso: "warning", concluido: "success"
+  })[status] as "danger" | "warning" | "success";
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <div className="flex justify-between items-center">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">8D · {params.nc_id}</p>
           <h1 className="text-3xl font-semibold text-white">Plano 8D</h1>
-          <p className="text-slate-400">Acompanhe o progresso das disciplinas e ações derivadas.</p>
         </div>
-        <Button variant="ghost" asChild>
-          <Link href={`/nc/${params.nc_id}`}>Voltar para NC</Link>
-        </Button>
+        <Button variant="ghost" asChild><Link href={`/nc`}>Voltar</Link></Button>
       </div>
 
       <Card className="border-slate-900 bg-slate-950/70">
-        <CardHeader>
-          <CardTitle>Disciplinas D1–D8</CardTitle>
-          <CardDescription>Atualize cada disciplina com o status correto</CardDescription>
-        </CardHeader>
+        <CardHeader><CardTitle>Disciplinas D1–D8</CardTitle><CardDescription>Preencha e atualize o estado de cada disciplina.</CardDescription></CardHeader>
         <CardContent>
-          <Tabs defaultValue="d1">
-            <TabsList className="flex-wrap">
-              {steps.map((step) => (
-                <TabsTrigger key={step.id} value={step.id} className="flex-1 min-w-[70px]">
-                  <span className="flex items-center justify-between gap-2">
-                    {step.label}
-                    <Badge variant={step.variant}>{step.status}</Badge>
-                  </span>
+          <Tabs defaultValue="d1" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+              {stepsConfig.map((step, index) => (
+                <TabsTrigger key={step.id} value={step.id}>
+                  {step.label} <Badge variant={getStatusVariant(statusValues[index])} className="ml-2">{statusValues[index].replace('_', ' ')}</Badge>
                 </TabsTrigger>
               ))}
             </TabsList>
-            {steps.map((step) => (
-              <TabsContent key={step.id} value={step.id} className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                  <p className="text-sm text-slate-400">Atualize os campos abaixo</p>
-                </div>
-                {step.fields.length === 0 ? (
-                  <p className="text-sm text-slate-500">Nenhum campo configurado para esta disciplina.</p>
-                ) : (
-                  <div className="space-y-4">
-                    {step.fields.map((field) => (
-                      <div key={field.id} className="space-y-2">
-                        <Label htmlFor={`${step.id}-${field.id}`}>{field.label}</Label>
-                        {field.id === "descr" || field.id === "contain" ? (
-                          <Textarea
-                            id={`${step.id}-${field.id}`}
-                            defaultValue={field.value}
-                            placeholder={field.placeholder}
-                          />
-                        ) : (
-                          <Input
-                            id={`${step.id}-${field.id}`}
-                            defaultValue={field.value}
-                            placeholder={field.placeholder}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="flex justify-end gap-3">
-                  <Button variant="ghost">Salvar rascunho</Button>
-                  <Button variant="primary">Marcar como concluído</Button>
-                </div>
+
+            {stepsConfig.map(step => (
+              <TabsContent key={step.id} value={step.id} className="mt-4 space-y-4">
+                <Card className="border-slate-800 bg-slate-950/50">
+                    <CardHeader>
+                        <CardTitle>{step.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label>Descrição / Ações</Label>
+                            <Textarea {...register(step.contentField as any)} rows={6} />
+                            {errors[step.contentField as keyof EightDFormValues] && <p className="text-sm text-red-500">{errors[step.contentField as keyof EightDFormValues]?.message}</p>}
+                        </div>
+                         <div className="space-y-2">
+                            <Label>Estado</Label>
+                            <Select {...register(step.statusField as any)}>
+                                <option value="pendente">Pendente</option>
+                                <option value="em_progresso">Em Progresso</option>
+                                <option value="concluido">Concluído</option>
+                            </Select>
+                        </div>
+                    </CardContent>
+                </Card>
               </TabsContent>
             ))}
+
+            <div className="mt-6 space-y-4 border-t border-slate-800 pt-6">
+                <Label className="text-lg">Finalização do Relatório 8D</Label>
+                <div className="space-y-2">
+                    <Label htmlFor="assinatura_responsavel">Assinatura do Responsável</Label>
+                    <Input id="assinatura_responsavel" {...register("assinatura_responsavel")} />
+                    {errors.assinatura_responsavel && <p className="text-sm text-red-500">{errors.assinatura_responsavel.message}</p>}
+                </div>
+            </div>
           </Tabs>
         </CardContent>
+        <CardFooter className="flex justify-end">
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
+                {isSubmitting ? "A guardar..." : "Guardar Relatório 8D"}
+            </Button>
+        </CardFooter>
       </Card>
-    </div>
+    </form>
   );
 }

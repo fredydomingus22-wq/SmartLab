@@ -8,34 +8,28 @@ import {
   AlertTriangle,
   Boxes,
   ClipboardList,
-  ClipboardPlus,
   Factory,
-  FilePlus,
   FileSearch,
   FileText,
   FlaskConical,
   GraduationCap,
   Handshake,
   LayoutDashboard,
-  LogIn,
   Menu,
   PackageCheck,
   PackagePlus,
   Route,
-  Shield,
-  ShieldAlert,
   ShieldCheck,
-  ShieldPlus,
   SlidersHorizontal,
-  SquarePen,
   SquarePlus,
   Tags,
   TestTube2,
   Thermometer,
-  Workflow,
+  Wrench,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/contexts/i18n-context";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -52,76 +46,42 @@ interface NavSection {
 
 export const sidebarNavItems: NavSection[] = [
   {
-    label: "Visão Geral",
+    label: "sidebar_overview",
     items: [{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
   },
   {
-    label: "Produção",
+    label: "sidebar_production",
     items: [
       { title: "Lotes de Produção", href: "/production-lots", icon: Factory },
-      { title: "Registar Novo Lote", href: "/production-lots/create", icon: SquarePlus },
       { title: "Produtos Intermédios", href: "/intermediate-lots", icon: Boxes },
-      { title: "Registar Produto Intermédio", href: "/intermediate-lots/create", icon: SquarePlus },
       { title: "Produtos Acabados", href: "/finished-lots", icon: PackageCheck },
-      { title: "Registar Análise de PA", href: "/finished-lots/create", icon: PackagePlus },
     ],
   },
   {
-    label: "Produtos & Parâmetros",
+    label: "sidebar_quality",
+    items: [
+      { title: "Não Conformidades", href: "/nc", icon: AlertTriangle },
+      { title: "Auditorias", href: "/audits", icon: FileSearch },
+      { title: "Food Safety (HACCP)", href: "/food-safety", icon: ShieldCheck },
+      { title: "Rastreabilidade", href: "/traceability", icon: Route },
+    ],
+  },
+  {
+    label: "sidebar_resources",
     items: [
       { title: "Produtos", href: "/products", icon: Tags },
-      { title: "Registar Produto", href: "/products/create", icon: SquarePlus },
       { title: "Parâmetros & Especificações", href: "/product-specs", icon: SlidersHorizontal },
-      { title: "Registar Especificação", href: "/product-specs/create", icon: SquarePen },
-    ],
-  },
-  {
-    label: "Materiais & Fornecedores",
-    items: [
-      { title: "Matérias-primas", href: "/raw-materials", icon: FlaskConical },
-      { title: "Registar Matéria-prima", href: "/raw-materials/create", icon: SquarePlus },
-      { title: "Lotes de Matéria-prima", href: "/raw-material-lots", icon: TestTube2 },
-      { title: "Registar Lote de MP", href: "/raw-material-lots/create", icon: SquarePlus },
+      { title: "Matérias-Primas", href: "/raw-materials", icon: FlaskConical },
+      { title: "Lotes de Matéria-Prima", href: "/raw-material-lots", icon: TestTube2 },
       { title: "Fornecedores", href: "/suppliers", icon: Handshake },
-      { title: "Registar Fornecedor", href: "/suppliers/create", icon: SquarePlus },
+      { title: "Equipamentos & Calibração", href: "/equipments", icon: Wrench },
     ],
   },
   {
-    label: "Qualidade & NC",
+    label: "sidebar_system",
     items: [
-      { title: "Análises de Laboratório", href: "/lab-tests", icon: FlaskConical },
-      { title: "Registar Análise", href: "/lab-tests/create", icon: SquarePlus },
-      { title: "Não Conformidades", href: "/nc", icon: AlertTriangle },
-      { title: "Registar NC", href: "/nc/create", icon: ClipboardPlus },
-      { title: "Relatórios 8D", href: "/nc/8d", icon: Workflow },
-      { title: "Auditorias", href: "/audits", icon: FileSearch },
-      { title: "Registar Auditoria", href: "/audits/create", icon: ClipboardList },
-    ],
-  },
-  {
-    label: "Segurança Alimentar",
-    items: [
-      { title: "Segurança Alimentar", href: "/food-safety", icon: ShieldCheck },
-      { title: "PRP", href: "/food-safety/prp", icon: Shield },
-      { title: "OPRP", href: "/food-safety/oprp", icon: ShieldPlus },
-      { title: "PCC", href: "/food-safety/pcc", icon: Thermometer },
-    ],
-  },
-  {
-    label: "Documentos & Treinamentos",
-    items: [
-      { title: "Rastreabilidade", href: "/traceability", icon: Route },
-      { title: "Documentos", href: "/documents", icon: FileText },
-      { title: "Registar Documento", href: "/documents/create", icon: FilePlus },
       { title: "Treinamentos", href: "/trainings", icon: GraduationCap },
-      { title: "Registar Treinamento", href: "/trainings/create", icon: SquarePlus },
-    ],
-  },
-  {
-    label: "Autenticação",
-    items: [
-      { title: "Login", href: "/auth/sign-in", icon: LogIn },
-      { title: "Acesso Negado", href: "/auth/forbidden", icon: ShieldAlert },
+      { title: "Documentos", href: "/documents", icon: FileText },
     ],
   },
 ];
@@ -145,6 +105,7 @@ function isActivePath(pathname: string, href: string) {
 
 export function Sidebar({ onNavigate, className }: SidebarProps) {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   return (
     <div
@@ -161,7 +122,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
         {sidebarNavItems.map((section) => (
           <div key={section.label}>
             <p className="px-2 text-xs uppercase tracking-[0.3em] text-slate-500">
-              {section.label}
+              {t(section.label as any)}
             </p>
             <div className="mt-3 space-y-1">
               {section.items.map((item) => {
@@ -185,7 +146,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
                         active ? "text-emerald-400" : "group-hover:text-slate-100"
                       )}
                     />
-                    <span>{item.title}</span>
+                    <span>{t(item.title as any)}</span>
                   </Link>
                 );
               })}
