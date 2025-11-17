@@ -28,69 +28,66 @@ const materialCatalog = [
   {
     id: "rm-001",
     nome: "Açúcar VHP",
-    unidade: "kg",
-    especificacao: "Polarização ≥ 99.7",
-    tipo: "Macronutriente",
     categoria: "Base",
+    unidade: "kg",
     risco: "low",
+    especificacao: "Polarização ≥ 99.7",
+    coaUrl: "https://example.com/coa-rm-001.pdf",
   },
   {
     id: "rm-002",
     nome: "Concentrado Guaraná",
-    unidade: "kg",
-    especificacao: "Brix 65 ±0.3",
-    tipo: "Xarope",
     categoria: "Flavor",
+    unidade: "kg",
     risco: "medium",
+    especificacao: "Brix 65 ±0.3",
+    coaUrl: "https://example.com/coa-rm-002.pdf",
   },
   {
     id: "rm-003",
     nome: "CO₂ Alimentício",
-    unidade: "kg",
-    especificacao: "Pureza ≥ 99.5%",
-    tipo: "Gás",
     categoria: "Utility",
+    unidade: "kg",
     risco: "low",
+    especificacao: "Pureza ≥ 99.5%",
+    coaUrl: "https://example.com/coa-rm-003.pdf",
   },
   {
     id: "rm-004",
     nome: "Ácido Cítrico",
-    unidade: "kg",
-    especificacao: "Teor 50 ±1%",
-    tipo: "Aditivo",
     categoria: "Base",
+    unidade: "kg",
     risco: "medium",
+    especificacao: "Teor 50 ±1%",
+    coaUrl: "https://example.com/coa-rm-004.pdf",
   },
   {
     id: "rm-005",
     nome: "Adoçante Líquido",
-    unidade: "L",
-    especificacao: "Pureza ≥ 99.0%",
-    tipo: "Aditivo",
     categoria: "Flavor",
+    unidade: "L",
     risco: "high",
+    especificacao: "Pureza ≥ 99.0%",
+    coaUrl: "https://example.com/coa-rm-005.pdf",
   },
 ];
 
+const riskCopy: Record<"low" | "medium" | "high", { label: string; variant: "success" | "warning" | "danger" }> = {
+  low: { label: "Estável", variant: "success" },
+  medium: { label: "Monitorar", variant: "warning" },
+  high: { label: "Crítico", variant: "danger" },
+};
+
 const categoryOptions = [
-  { value: "all", label: "Todas as categorias" },
+  { value: "all", label: "Todas" },
   { value: "Base", label: "Base" },
   { value: "Flavor", label: "Flavor" },
   { value: "Utility", label: "Utility" },
 ];
 
-const riskCopy: Record<
-  "low" | "medium" | "high",
-  { label: string; variant: "success" | "warning" | "danger"; helper: string }
-> = {
-  low: { label: "Estável", variant: "success", helper: "Sem desvios" },
-  medium: { label: "Monitorar", variant: "warning", helper: "Atenção a trends" },
-  high: { label: "Crítico", variant: "danger", helper: "Plano de ação" },
-};
-
 export default function RawMaterialsPage() {
   const router = useRouter();
-  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
   const filteredMaterials = useMemo(() => {
     if (categoryFilter === "all") return materialCatalog;
@@ -113,9 +110,7 @@ export default function RawMaterialsPage() {
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Matéria-prima</p>
           <h1 className="mt-2 text-3xl font-semibold text-white">Catálogo de materiais</h1>
-          <p className="text-slate-400">
-            Controle os ingredientes estratégicos com specs, classificação e nível de risco.
-          </p>
+          <p className="text-slate-400">Acompanhe specs, risco e certificados em um único painel.</p>
         </div>
         <Button variant="primary" asChild>
           <Link href="/raw-materials/create">Criar Material</Link>
@@ -138,7 +133,7 @@ export default function RawMaterialsPage() {
               <CardTitle className={`text-3xl font-semibold ${card.accent}`}>
                 {riskStats[card.key]}
               </CardTitle>
-              <p className="text-sm text-slate-400">Materiais neste estado</p>
+              <p className="text-sm text-slate-400">Materiais nesta condição</p>
             </CardHeader>
           </Card>
         ))}
@@ -148,7 +143,7 @@ export default function RawMaterialsPage() {
         <CardHeader className="flex flex-col gap-4 border-b border-slate-900/80 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <CardTitle>Lista mestre</CardTitle>
-            <CardDescription>Filtre por categoria para priorizar inspeções.</CardDescription>
+            <CardDescription>Filtre por categoria para localizar rapidamente.</CardDescription>
           </div>
           <div className="w-full max-w-xs">
             <Label htmlFor="categoria" className="text-xs uppercase tracking-[0.2em] text-slate-400">
@@ -173,11 +168,11 @@ export default function RawMaterialsPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
+                <TableHead>Categoria</TableHead>
                 <TableHead>Unidade</TableHead>
                 <TableHead>Especificação</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>Categoria</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Risco</TableHead>
+                <TableHead>COA</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -191,19 +186,20 @@ export default function RawMaterialsPage() {
                     <div>{material.nome}</div>
                     <p className="text-xs text-slate-500">ID {material.id}</p>
                   </TableCell>
+                  <TableCell>{material.categoria}</TableCell>
                   <TableCell>{material.unidade}</TableCell>
                   <TableCell className="text-slate-300">{material.especificacao}</TableCell>
-                  <TableCell>{material.tipo}</TableCell>
-                  <TableCell>
-                    <Badge variant="neutral">{material.categoria}</Badge>
-                  </TableCell>
                   <TableCell>
                     <Badge variant={riskCopy[material.risco as keyof typeof riskCopy].variant}>
                       {riskCopy[material.risco as keyof typeof riskCopy].label}
                     </Badge>
-                    <p className="text-xs text-slate-500">
-                      {riskCopy[material.risco as keyof typeof riskCopy].helper}
-                    </p>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={material.coaUrl} target="_blank" rel="noreferrer">
+                        Ver / baixar
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

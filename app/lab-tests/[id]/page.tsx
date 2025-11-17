@@ -19,260 +19,133 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-interface ParameterResult {
-  parameter: string;
-  result: string;
-  specification: string;
-  method: string;
-  analyst: string;
-  timestamp: string;
-  status: "success" | "warning" | "danger";
-}
-
-interface LabTestDetail {
-  id: string;
-  category: "RM" | "PI" | "PF";
-  lot: string;
-  product: string;
-  line: string;
-  shift: string;
-  status: "success" | "warning" | "danger";
-  analyst: string;
-  sampleTime: string;
-  releaseWindow: string;
-  timelineLot: string;
-  notes: string;
-  parameters: ParameterResult[];
-}
-
-const detailStore: Record<string, LabTestDetail> = {
+const labTestRegistry = {
+  "LAB-2409-118": {
+    id: "LAB-2409-118",
+    category: "PF",
+    sample: "PF-240915-05",
+    product: "Cola Zero 350ml",
+    analyst: "C. Braga",
+    method: "CO₂ volumétrico",
+    data: "2024-09-15T10:18",
+    status: "success",
+    productionLotId: "PL-240915-05",
+    parameters: [
+      { name: "CO₂", result: "6.45 g/L", spec: "6.3 ±0.2", status: "success" },
+      { name: "Brix", result: "11.0 °Bx", spec: "11.0 ±0.3", status: "success" },
+      { name: "pH", result: "3.32", spec: "3.30 ±0.05", status: "warning" },
+      { name: "Densidade", result: "1.015 g/cm³", spec: "1.015 ±0.002", status: "success" },
+    ],
+  },
   "LAB-2409-313": {
     id: "LAB-2409-313",
     category: "PF",
-    lot: "PF-240915-07",
-    product: "Chá Pêssego 1L",
-    line: "Envase Vidro",
-    shift: "Tarde",
-    status: "danger",
+    sample: "PF-240915-07",
+    product: "Chá Pêssego",
     analyst: "C. Braga",
-    sampleTime: "2024-09-15T10:36",
-    releaseWindow: "+6h",
-    timelineLot: "PL-240915-11",
-    notes: "Desvio de pH observado, aguardando avaliação sensorial.",
+    method: "pH metrico",
+    data: "2024-09-15T10:36",
+    status: "danger",
+    productionLotId: "PL-240915-07",
     parameters: [
-      {
-        parameter: "pH",
-        result: "3.49",
-        specification: "3.35 ±0.05",
-        method: "pHmetro",
-        analyst: "C. Braga",
-        timestamp: "10:36",
-        status: "danger",
-      },
-      {
-        parameter: "Brix",
-        result: "8.9 °Bx",
-        specification: "9.2 ±0.2",
-        method: "Refratômetro",
-        analyst: "C. Braga",
-        timestamp: "10:40",
-        status: "warning",
-      },
-      {
-        parameter: "CO₂",
-        result: "5.05 g/L",
-        specification: "5.3 ±0.3",
-        method: "CarboQC",
-        analyst: "E. Lopes",
-        timestamp: "10:44",
-        status: "warning",
-      },
-      {
-        parameter: "Micro 30°C",
-        result: "Ausente",
-        specification: "Ausente",
-        method: "Placa",
-        analyst: "M. Silva",
-        timestamp: "11:10",
-        status: "success",
-      },
-      {
-        parameter: "Micro 45°C",
-        result: "Ausente",
-        specification: "Ausente",
-        method: "Placa",
-        analyst: "M. Silva",
-        timestamp: "11:30",
-        status: "success",
-      },
-      {
-        parameter: "Sensory",
-        result: "Observação",
-        specification: "Aprovado",
-        method: "Painel",
-        analyst: "Comitê",
-        timestamp: "12:05",
-        status: "warning",
-      },
+      { name: "pH", result: "3.49", spec: "3.35 ±0.05", status: "danger" },
+      { name: "Brix", result: "8.8 °Bx", spec: "9.2 ±0.3", status: "warning" },
+      { name: "CO₂", result: "5.1 g/L", spec: "5.5 ±0.3", status: "warning" },
+      { name: "Sensory", result: "Observação", spec: "Aprovado", status: "danger" },
     ],
   },
-  "LAB-2409-118": {
-    id: "LAB-2409-118",
-    category: "RM",
-    lot: "RM-ACUC-4412",
-    product: "Açúcar VHP",
-    line: "Recebimento",
-    shift: "Manhã",
-    status: "success",
-    analyst: "L. Souza",
-    sampleTime: "2024-09-15T07:55",
-    releaseWindow: "+2h",
-    timelineLot: "PL-240915-01",
-    notes: "Resultado conforme COA. Liberado para dissolução.",
-    parameters: [
-      {
-        parameter: "Brix",
-        result: "65.1 °Bx",
-        specification: "65.0 ±0.3",
-        method: "Refratômetro",
-        analyst: "L. Souza",
-        timestamp: "07:55",
-        status: "success",
-      },
-      {
-        parameter: "Cor ICUMSA",
-        result: "120",
-        specification: "≤150",
-        method: "Colorímetro",
-        analyst: "L. Souza",
-        timestamp: "08:02",
-        status: "success",
-      },
-      {
-        parameter: "Umidade",
-        result: "0.07%",
-        specification: "≤0.10%",
-        method: "Estufa",
-        analyst: "E. Braga",
-        timestamp: "08:18",
-        status: "success",
-      },
-    ],
-  },
+} as const;
+
+type LabStatus = "success" | "warning" | "danger";
+
+const statusCopy: Record<LabStatus, { label: string; helper: string }> = {
+  success: { label: "Conforme", helper: "Todos os resultados dentro da especificação" },
+  warning: { label: "Ajuste", helper: "Acompanhar correções de processo" },
+  danger: { label: "Crítico", helper: "Necessária ação imediata" },
 };
 
-const categoryCopy: Record<LabTestDetail["category"], { label: string; helper: string }> = {
-  RM: { label: "Matéria-prima", helper: "COA & recebimento" },
-  PI: { label: "Processo intermédio", helper: "Xarope & mistura" },
-  PF: { label: "Produto final", helper: "Envase & liberação" },
-};
-
-const statusCopy: Record<LabTestDetail["status"], { label: string; description: string }> = {
-  success: { label: "Conforme", description: "Todos os parâmetros dentro de especificação." },
-  warning: { label: "Ajuste", description: "Há parâmetros em atenção, valide ajustes." },
-  danger: { label: "Crítico", description: "Há parâmetros fora de especificação." },
-};
-
-const statusBadge: Record<LabTestDetail["status"], "success" | "warning" | "danger"> = {
-  success: "success",
-  warning: "warning",
-  danger: "danger",
-};
-
-interface LabTestDetailPageProps {
+interface LabTestPageProps {
   params: { id: string };
 }
 
-export default function LabTestDetailPage({ params }: LabTestDetailPageProps) {
-  const detail = detailStore[params.id];
+export default function LabTestPage({ params }: LabTestPageProps) {
+  const labTest = labTestRegistry[params.id as keyof typeof labTestRegistry];
 
-  if (!detail) {
+  if (!labTest) {
     notFound();
   }
 
-  const meta = [
-    { label: "Categoria", value: categoryCopy[detail.category].label },
-    { label: "Produto", value: detail.product },
-    { label: "Lote", value: detail.lot },
-    { label: "Linha", value: detail.line },
-    { label: "Turno", value: detail.shift },
-    { label: "Analista", value: detail.analyst },
-    {
-      label: "Coleta",
-      value: new Date(detail.sampleTime).toLocaleString("pt-BR", {
-        dateStyle: "short",
-        timeStyle: "short",
-      }),
-    },
-    { label: "Janela de liberação", value: detail.releaseWindow },
-  ];
+  const status = statusCopy[labTest.status as LabStatus];
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Laboratório » Detalhe</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">{detail.id}</h1>
-          <p className="text-slate-400">{categoryCopy[detail.category].helper} • {detail.product}</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Laboratório</p>
+          <h1 className="text-3xl font-semibold text-white">{labTest.id}</h1>
+          <p className="text-slate-400">Análise da amostra {labTest.sample} ({labTest.product}).</p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex gap-3">
           <Button variant="outline" asChild>
             <Link href="/lab-tests">Voltar</Link>
           </Button>
           <Button variant="primary" asChild>
-            <Link href={`/traceability/${detail.timelineLot}`}>
-              Abrir timeline
+            <Link href={`/traceability/${labTest.productionLotId}`}>
+              Ver timeline do lote
             </Link>
           </Button>
         </div>
       </div>
 
-      <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <Card className="border-slate-900 bg-slate-950/70">
-          <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <CardTitle>Status analítico</CardTitle>
-              <CardDescription>{statusCopy[detail.status].description}</CardDescription>
-            </div>
-            <Badge variant={statusBadge[detail.status]} className="text-base uppercase tracking-[0.2em]">
-              {statusCopy[detail.status].label}
-            </Badge>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {meta.map((item) => (
-                <div key={item.label} className="rounded-xl border border-slate-900/80 bg-slate-950/60 p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{item.label}</p>
-                  <p className="mt-2 text-base text-white">{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-slate-900 bg-slate-950/70">
-          <CardHeader>
-            <CardTitle>Observações</CardTitle>
-            <CardDescription>Contexto compartilhado com QA e produção</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-slate-300">{detail.notes}</p>
-            <div className="mt-6 rounded-xl border border-slate-900/70 bg-slate-950/60 p-4 text-sm text-slate-400">
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Timeline</p>
-              <p className="text-white">{detail.timelineLot}</p>
-              <p>Última atualização: {new Date(detail.sampleTime).toLocaleTimeString("pt-BR", { timeStyle: "short" })}</p>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
+      <Card className="border-slate-900 bg-slate-950/70">
+        <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <CardTitle>Metadata</CardTitle>
+            <CardDescription>Contexto completo da coleta.</CardDescription>
+          </div>
+          <Badge variant={labTest.status as LabStatus}>{status.label}</Badge>
+        </CardHeader>
+        <CardContent className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Categoria</p>
+            <p className="text-base text-white">{labTest.category}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Analista</p>
+            <p className="text-base text-white">{labTest.analyst}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Método</p>
+            <p className="text-base text-white">{labTest.method}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Data</p>
+            <p className="text-base text-white">
+              {new Date(labTest.data).toLocaleString("pt-BR", {
+                dateStyle: "short",
+                timeStyle: "short",
+              })}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Produto</p>
+            <p className="text-base text-white">{labTest.product}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Sample ID</p>
+            <p className="text-base text-white">{labTest.sample}</p>
+          </div>
+          <div className="md:col-span-2">
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Situação</p>
+            <p className="text-base text-slate-300">{status.helper}</p>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="border-slate-900">
-        <CardHeader className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <CardTitle>Resultados de parâmetros</CardTitle>
-            <CardDescription>Últimas leituras registradas para esta amostra</CardDescription>
-          </div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{detail.parameters.length} ENSAIOS</p>
+        <CardHeader>
+          <CardTitle>Resultados por parâmetro</CardTitle>
+          <CardDescription>Últimos valores lançados no LIMS.</CardDescription>
         </CardHeader>
         <CardContent className="px-0">
           <Table>
@@ -281,34 +154,42 @@ export default function LabTestDetailPage({ params }: LabTestDetailPageProps) {
                 <TableHead>Parâmetro</TableHead>
                 <TableHead>Resultado</TableHead>
                 <TableHead>Especificação</TableHead>
-                <TableHead>Método</TableHead>
-                <TableHead>Analista</TableHead>
-                <TableHead>Hora</TableHead>
                 <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {detail.parameters.map((parameter) => (
-                <TableRow key={`${detail.id}-${parameter.parameter}-${parameter.timestamp}`}>
-                  <TableCell className="font-semibold text-white">{parameter.parameter}</TableCell>
+              {labTest.parameters.map((parameter) => (
+                <TableRow key={parameter.name}>
+                  <TableCell className="font-semibold text-white">{parameter.name}</TableCell>
                   <TableCell>{parameter.result}</TableCell>
-                  <TableCell className="text-slate-400">{parameter.specification}</TableCell>
-                  <TableCell className="text-slate-400">{parameter.method}</TableCell>
-                  <TableCell className="text-slate-400">{parameter.analyst}</TableCell>
-                  <TableCell className="text-slate-400">{parameter.timestamp}</TableCell>
+                  <TableCell className="text-slate-400">{parameter.spec}</TableCell>
                   <TableCell>
-                    <Badge variant={parameter.status}>
-                      {parameter.status === "success"
-                        ? "OK"
-                        : parameter.status === "warning"
-                        ? "Ajustar"
-                        : "Crítico"}
+                    <Badge variant={parameter.status as LabStatus}>
+                      {statusCopy[parameter.status as LabStatus].label}
                     </Badge>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+        </CardContent>
+      </Card>
+
+      <Card className="border-slate-900 bg-slate-950/60">
+        <CardHeader>
+          <CardTitle>Timeline & ações</CardTitle>
+          <CardDescription>Integre o resultado com rastreabilidade e NC.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-sm text-slate-300">
+              Este ensaio está vinculado ao lote pai {labTest.productionLotId}. Utilize a timeline de
+              rastreabilidade para acompanhar PCC, NCs e liberações.
+            </p>
+          </div>
+          <Button variant="secondary" asChild>
+            <Link href={`/traceability/${labTest.productionLotId}`}>Abrir timeline</Link>
+          </Button>
         </CardContent>
       </Card>
     </div>

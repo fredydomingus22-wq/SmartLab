@@ -89,6 +89,7 @@ export default function CreateLabTestPage() {
   const tipoValue = watch("tipo");
   const analistaValue = watch("analista");
   const parametrosWatch = watch("parametros");
+  const dataValue = watch("data");
 
   const tipoLabel = tipoOptions.find((item) => item.value === tipoValue)?.label;
   const analistaLabel = analystOptions.find((item) => item.value === analistaValue)?.label;
@@ -353,6 +354,18 @@ export default function CreateLabTestPage() {
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Com especificação</p>
                 <p className="mt-2 text-2xl font-semibold text-white">{parameterStats.specs}</p>
                 <p className="text-xs text-slate-500">Itens com faixa alvo ou limite</p>
+              </div>
+              <div className="rounded-xl border border-slate-900/80 bg-slate-950/60 p-4">
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Agenda</p>
+                <p className="mt-2 text-2xl font-semibold text-white">
+                  {dataValue
+                    ? new Date(dataValue).toLocaleString("pt-BR", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                      })
+                    : "Defina a data"}
+                </p>
+                <p className="text-xs text-slate-500">Momento programado da coleta</p>
               </div>
             </CardContent>
           </Card>

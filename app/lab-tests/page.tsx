@@ -235,23 +235,36 @@ export default function LabTestsPage() {
             <CardDescription>
               Utilize filtros para priorizar desvios e lotes críticos.
             </CardDescription>
+            <p className="text-xs text-slate-500">
+              {filteredAnalyses.length} análise(s) exibida(s)
+            </p>
           </div>
-          <div className="w-full max-w-xs">
-            <Label htmlFor="categoria" className="text-xs uppercase tracking-[0.2em] text-slate-400">
-              Categoria
-            </Label>
-            <Select
-              id="categoria"
-              value={categoryFilter}
-              onChange={(event) => setCategoryFilter(event.target.value)}
-              className="mt-2"
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:justify-end">
+            <div className="w-full sm:max-w-xs">
+              <Label htmlFor="categoria" className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                Categoria
+              </Label>
+              <Select
+                id="categoria"
+                value={categoryFilter}
+                onChange={(event) => setCategoryFilter(event.target.value)}
+                className="mt-2"
+              >
+                {categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={categoryFilter === "all"}
+              onClick={() => setCategoryFilter("all")}
             >
-              {categoryOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </Select>
+              Limpar filtro
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="px-0">
