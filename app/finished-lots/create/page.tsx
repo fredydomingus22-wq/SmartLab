@@ -62,6 +62,7 @@ const productSpecs = {
 
 type SpecKey = keyof (typeof productSpecs)["IL-240915-11"];
 type ProductKey = keyof typeof productSpecs;
+type ProductSpec = (typeof productSpecs)[ProductKey];
 
 const createFinishedLotSchema = z.object({
   codigoPf: z.string().min(4, "O código do lote de produto acabado é obrigatório."),
@@ -78,7 +79,7 @@ const createFinishedLotSchema = z.object({
 type CreateFinishedLotValues = z.infer<typeof createFinishedLotSchema>;
 
 export default function CreateFinishedLotPage() {
-  const [activeSpec, setActiveSpec] = useState(productSpecs["IL-240915-11"]);
+  const [activeSpec, setActiveSpec] = useState<ProductSpec>(productSpecs["IL-240915-11"]);
 
   const form = useForm<CreateFinishedLotValues>({
     resolver: zodResolver(createFinishedLotSchema),
