@@ -13,6 +13,8 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
 
+  const mobileNavItems = sidebarNavItems.flatMap((section) => section.items);
+
   return (
     <div className="flex min-h-screen bg-slate-950 text-slate-100">
       <Sidebar />
@@ -25,11 +27,11 @@ export function AppShell({ children }: AppShellProps) {
             </div>
           </div>
           <nav className="flex gap-2 overflow-x-auto px-2 pb-4">
-            {sidebarNavItems.map((item) => {
+            {mobileNavItems.map((item) => {
               const isActive =
                 item.href === "/"
                   ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
                   key={item.href}
@@ -40,7 +42,7 @@ export function AppShell({ children }: AppShellProps) {
                     isActive && "border-sky-500/60 bg-slate-900 text-slate-100"
                   )}
                 >
-                  {item.label}
+                  {item.title}
                 </Link>
               );
             })}

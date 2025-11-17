@@ -50,7 +50,7 @@ interface NavSection {
   items: NavItem[];
 }
 
-const navSections: NavSection[] = [
+export const sidebarNavItems: NavSection[] = [
   {
     label: "Visão Geral",
     items: [{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
@@ -158,7 +158,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
         <p className="text-lg font-semibold text-white">Quality Command</p>
       </div>
       <div className="mt-8 flex-1 space-y-6 overflow-y-auto pr-1">
-        {navSections.map((section) => (
+        {sidebarNavItems.map((section) => (
           <div key={section.label}>
             <p className="px-2 text-xs uppercase tracking-[0.3em] text-slate-500">
               {section.label}
@@ -206,7 +206,7 @@ export function MobileSidebar() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <Button
           type="button"
           variant="ghost"
