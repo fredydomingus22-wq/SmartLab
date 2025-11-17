@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -33,14 +33,35 @@ const lineOptions = [
   { value: "linha-pet-3", label: "Linha PET 3" },
 ];
 
-const specWindows = {
-  co2: { label: "CO₂", unit: "g/L", min: 5.8, max: 6.3 },
-  brix: { label: "Brix", unit: "°Bx", min: 11.5, max: 12.1 },
-  ph: { label: "pH", unit: "pH", min: 3.12, max: 3.25 },
-  densidade: { label: "Densidade", unit: "g/cm³", min: 1.042, max: 1.048 },
+const productSpecs = {
+  "IL-240915-07": { // Cola Zero
+    co2: { label: "CO₂", unit: "g/L", min: 6.8, target: 7.0, max: 7.2 },
+    brix: { label: "Brix", unit: "°Bx", min: 0, target: 0, max: 0.5 },
+    ph: { label: "pH", unit: "pH", min: 2.4, target: 2.5, max: 2.6 },
+    densidade: { label: "Densidade", unit: "g/cm³", min: 1.001, target: 1.002, max: 1.003 },
+  },
+  "IL-240915-11": { // Guaraná
+    co2: { label: "CO₂", unit: "g/L", min: 5.8, target: 6.0, max: 6.2 },
+    brix: { label: "Brix", unit: "°Bx", min: 11.8, target: 12.0, max: 12.2 },
+    ph: { label: "pH", unit: "pH", min: 3.1, target: 3.2, max: 3.3 },
+    densidade: { label: "Densidade", unit: "g/cm³", min: 1.045, target: 1.047, max: 1.049 },
+  },
+  "IL-240916-03": { // Chá pêssego
+    co2: { label: "CO₂", unit: "g/L", min: 0, target: 0, max: 0 },
+    brix: { label: "Brix", unit: "°Bx", min: 7.8, target: 8.0, max: 8.2 },
+    ph: { label: "pH", unit: "pH", min: 3.4, target: 3.5, max: 3.6 },
+    densidade: { label: "Densidade", unit: "g/cm³", min: 1.029, target: 1.030, max: 1.031 },
+  },
+  "IL-240916-05": { // Tangerina
+    co2: { label: "CO₂", unit: "g/L", min: 4.8, target: 5.0, max: 5.2 },
+    brix: { label: "Brix", unit: "°Bx", min: 9.8, target: 10.0, max: 10.2 },
+    ph: { label: "pH", unit: "pH", min: 2.8, target: 2.9, max: 3.0 },
+    densidade: { label: "Densidade", unit: "g/cm³", min: 1.038, target: 1.040, max: 1.042 },
+  }
 } as const;
 
-type SpecKey = keyof typeof specWindows;
+type SpecKey = keyof (typeof productSpecs)["IL-240915-11"];
+type ProductKey = keyof typeof productSpecs;
 
 const createFinishedLotSchema = z.object({
   codigoPf: z.string().min(4, "O código do lote de produto acabado é obrigatório."),
@@ -51,22 +72,26 @@ const createFinishedLotSchema = z.object({
   ph: z.coerce.number().min(0, "O valor de pH é obrigatório."),
   densidade: z.coerce.number().min(0, "O valor de densidade é obrigatório."),
   dataAnalise: z.string().min(1, "A data e hora da análise são obrigatórias."),
+  assinatura: z.string().min(3, "A assinatura do analista é obrigatória."),
 });
 
 type CreateFinishedLotValues = z.infer<typeof createFinishedLotSchema>;
 
 export default function CreateFinishedLotPage() {
+  const [activeSpec, setActiveSpec] = useState(productSpecs["IL-240915-11"]);
+
   const form = useForm<CreateFinishedLotValues>({
     resolver: zodResolver(createFinishedLotSchema),
     defaultValues: {
       codigoPf: "FL-2024-09-032",
-      loteIntermedio: "",
-      linha: "",
-      co2: 6.05,
-      brix: 11.92,
-      ph: 3.17,
-      densidade: 1.045,
+      loteIntermedio: "IL-240915-11",
+      linha: "linha-pet-2",
+      co2: 6.0,
+      brix: 12.0,
+      ph: 3.2,
+      densidade: 1.047,
       dataAnalise: "2024-09-16T08:30",
+      assinatura: "",
     },
   });
 
@@ -75,6 +100,7 @@ export default function CreateFinishedLotPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    setValue,
   } = form;
 
   const [co2Value, brixValue, phValue, densidadeValue, loteIntermedioValue, linhaValue, dataAnaliseValue] = watch([
@@ -86,6 +112,17 @@ export default function CreateFinishedLotPage() {
     "linha",
     "dataAnalise",
   ]);
+
+  useEffect(() => {
+    if (loteIntermedioValue && productSpecs[loteIntermedioValue as ProductKey]) {
+      const newSpec = productSpecs[loteIntermedioValue as ProductKey];
+      setActiveSpec(newSpec);
+      setValue("co2", newSpec.co2.target);
+      setValue("brix", newSpec.brix.target);
+      setValue("ph", newSpec.ph.target);
+      setValue("densidade", newSpec.densidade.target);
+    }
+  }, [loteIntermedioValue, setValue]);
 
   const intermediateLabel =
     intermediateLotOptions.find((option) => option.value === loteIntermedioValue)?.label ??
@@ -105,7 +142,7 @@ export default function CreateFinishedLotPage() {
 
   const specInsights = useMemo(
     () =>
-      (Object.keys(specWindows) as SpecKey[]).map((key) => {
+      (Object.keys(activeSpec) as SpecKey[]).map((key) => {
         const value =
           key === "co2"
             ? co2Value
@@ -114,26 +151,26 @@ export default function CreateFinishedLotPage() {
             : key === "ph"
             ? phValue
             : densidadeValue;
-        const spec = specWindows[key];
+        const spec = activeSpec[key];
         if (value === undefined || Number.isNaN(value)) {
           return { key, value: "—", variant: "neutral" as const, helper: "Pendente" };
         }
         if (value < spec.min || value > spec.max) {
           return {
             key,
-            value: value.toFixed(2),
+            value: value.toFixed(3),
             variant: "danger" as const,
             helper: value < spec.min ? "Abaixo" : "Acima",
           };
         }
         return {
           key,
-          value: value.toFixed(2),
+          value: value.toFixed(3),
           variant: "success" as const,
           helper: "Dentro da janela",
         };
       }),
-    [brixValue, co2Value, densidadeValue, phValue]
+    [activeSpec, brixValue, co2Value, densidadeValue, phValue]
   );
 
   async function onSubmit(values: CreateFinishedLotValues) {
@@ -248,20 +285,19 @@ export default function CreateFinishedLotPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4 rounded-2xl border border-slate-900 bg-slate-950/60 p-6 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="text-sm font-medium text-white">Rastreabilidade</p>
-                  <p className="text-xs text-slate-500">
-                    {loteIntermedioValue
-                      ? `Associado ao ${intermediateLabel} em ${lineLabel || "linha indefinida"}`
-                      : "Selecione o lote intermédio e a linha"}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {dataAnaliseLabel
-                      ? `Análise registada em ${dataAnaliseLabel}`
-                      : "Informe a data/hora da análise"}
-                  </p>
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="assinatura">Assinatura do Analista</Label>
+                <Input
+                  id="assinatura"
+                  placeholder="Introduza a sua assinatura digital"
+                  {...register("assinatura")}
+                />
+                {errors.assinatura && (
+                  <p className="text-sm text-red-400">{errors.assinatura.message}</p>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-4 rounded-2xl border border-slate-900 bg-slate-950/60 p-6 md:flex-row md:items-center md:justify-end">
                 <Button type="submit" variant="primary" className="min-w-[200px]" disabled={isSubmitting}>
                   {isSubmitting ? "A registar..." : "Registar Análise de PA"}
                 </Button>
@@ -278,7 +314,7 @@ export default function CreateFinishedLotPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {specInsights.map((item) => {
-                const spec = specWindows[item.key];
+                const spec = activeSpec[item.key as SpecKey];
                 return (
                   <div key={item.key} className="rounded-xl border border-slate-900/70 bg-slate-950/60 p-4">
                     <div className="flex items-start justify-between">
@@ -289,7 +325,7 @@ export default function CreateFinishedLotPage() {
                           <span className="ml-1 text-sm text-slate-500">{spec.unit}</span>
                         </p>
                         <p className="text-xs text-slate-500">
-                          Limite {spec.min.toFixed(2)} – {spec.max.toFixed(2)} {spec.unit}
+                          Limite {spec.min.toFixed(3)} – {spec.max.toFixed(3)} {spec.unit}
                         </p>
                       </div>
                       <Badge variant={item.variant as "success" | "neutral" | "danger"}>{item.helper}</Badge>

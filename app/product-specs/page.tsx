@@ -101,7 +101,8 @@ export default function ProductSpecsPage() {
                 <TableHead>Min</TableHead>
                 <TableHead>Target</TableHead>
                 <TableHead>Max</TableHead>
-                <TableHead className="text-right">Status</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -113,8 +114,13 @@ export default function ProductSpecsPage() {
                   <TableCell>{spec.min}</TableCell>
                   <TableCell>{spec.target}</TableCell>
                   <TableCell>{spec.max}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     <Badge variant={spec.status === "Atualizado" ? "success" : "warning"}>{spec.status}</Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/product-specs/${spec.id}`}>Ver Detalhes</Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

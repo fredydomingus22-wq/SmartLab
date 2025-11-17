@@ -42,6 +42,7 @@ const intermediateLotSchema = z.object({
   ph: z.string().min(1, "O valor de pH é obrigatório."),
   acidez: z.string().min(1, "O valor da acidez é obrigatório."),
   dataPreparacao: z.string().min(1, "A data de preparação é obrigatória."),
+  assinatura: z.string().min(3, "A assinatura do analista é obrigatória."),
 });
 
 type IntermediateLotFormValues = z.infer<typeof intermediateLotSchema>;
@@ -203,14 +204,19 @@ export default function CreateIntermediateLotPage() {
                   )}
                 </div>
               </div>
-            </CardContent>
-            <CardFooter className="flex flex-col gap-4 border-t border-slate-900/80 bg-slate-950/40 p-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <p className="text-sm text-slate-300">Estado</p>
-                <p className="text-xs text-slate-500">
-                  {lotePaiValue ? `Lote Pai ${lotePaiValue} em ${tanqueValue || "tanque indefinido"}` : "Selecione um lote pai para continuar."}
-                </p>
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="assinatura">Assinatura do Analista</Label>
+                <Input
+                  id="assinatura"
+                  placeholder="Introduza a sua assinatura digital"
+                  {...register("assinatura")}
+                />
+                {errors.assinatura && (
+                  <p className="text-sm text-red-400">{errors.assinatura.message}</p>
+                )}
               </div>
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4 border-t border-slate-900/80 bg-slate-950/40 p-6 md:flex-row md:items-center md:justify-end">
               <Button type="submit" variant="primary" className="min-w-[200px]" disabled={isSubmitting}>
                 {isSubmitting ? "A registar..." : "Registar Produto Intermédio"}
               </Button>

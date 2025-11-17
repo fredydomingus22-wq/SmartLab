@@ -25,6 +25,7 @@ const ncSchema = z.object({
   origem: z.string().min(1, "Informe a origem"),
   descricao: z.string().min(10, "Descreva o desvio"),
   responsavel: z.string().min(3, "Informe o responsável"),
+  assinatura: z.string().min(3, "A assinatura do analista é obrigatória."),
 });
 
 type NcFormValues = z.infer<typeof ncSchema>;
@@ -112,13 +113,20 @@ export default function CreateNcPage() {
                 <Input id="responsavel" placeholder="Nome do responsável" {...register("responsavel")} />
                 {errors.responsavel && <p className="text-sm text-red-400">{errors.responsavel.message}</p>}
               </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="assinatura">Assinatura do Analista</Label>
+                <Input
+                  id="assinatura"
+                  placeholder="Introduza a sua assinatura digital"
+                  {...register("assinatura")}
+                />
+                {errors.assinatura && (
+                  <p className="text-sm text-red-400">{errors.assinatura.message}</p>
+                )}
+              </div>
             </div>
 
-            <CardFooter className="flex flex-col gap-4 rounded-2xl border border-dashed border-slate-800/70 bg-slate-950/50 p-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <p className="text-sm text-slate-300">Checklist</p>
-                <p className="text-xs text-slate-500">Tipo e severidade definidos acionam fluxo 8D automaticamente.</p>
-              </div>
+            <CardFooter className="flex flex-col gap-4 rounded-2xl border-t border-slate-900 bg-slate-950/50 p-6 md:flex-row md:items-center md:justify-end">
               <Button type="submit" variant="primary" disabled={isSubmitting} className="min-w-[200px]">
                 {isSubmitting ? "Registrando..." : "Abrir NC"}
               </Button>

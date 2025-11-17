@@ -20,6 +20,7 @@ const trainingSchema = z.object({
   validade: z
     .coerce.number({ invalid_type_error: "Informe a validade em meses." })
     .min(1, "Mínimo 1 mês."),
+  assinatura: z.string().min(3, "A assinatura do analista é obrigatória."),
 });
 
 type TrainingFormValues = z.infer<typeof trainingSchema>;
@@ -128,7 +129,18 @@ export default function CreateTrainingPage() {
                   {errors.validade && <p className="text-sm text-red-400">{errors.validade.message}</p>}
                 </div>
               </div>
-              <div className="flex justify-end">
+              <div className="space-y-2">
+                <Label htmlFor="assinatura">Assinatura do Analista</Label>
+                <Input
+                  id="assinatura"
+                  placeholder="Introduza a sua assinatura digital"
+                  {...register("assinatura")}
+                />
+                {errors.assinatura && (
+                  <p className="text-sm text-red-400">{errors.assinatura.message}</p>
+                )}
+              </div>
+              <div className="flex justify-end pt-4">
                 <Button type="submit" variant="primary" disabled={isSubmitting} className="min-w-[200px]">
                   {isSubmitting ? "Salvando..." : "Salvar treinamento"}
                 </Button>

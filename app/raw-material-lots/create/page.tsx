@@ -38,6 +38,7 @@ const schema = z.object({
   data: z.string().min(1, "A data de recebimento é obrigatória."),
   quantidade: z.string().min(1, "A quantidade recebida é obrigatória."),
   status: z.enum(["quarentena", "liberado", "bloqueado"]),
+  assinatura: z.string().min(3, "A assinatura do analista é obrigatória."),
 });
 
 type RawMaterialLotFormValues = z.infer<typeof schema>;
@@ -152,7 +153,18 @@ export default function CreateRawMaterialLotPage() {
                   <option value="bloqueado">Bloqueado</option>
                 </Select>
               </div>
-              <div className="flex justify-end">
+              <div className="space-y-2">
+                <Label htmlFor="assinatura">Assinatura do Analista</Label>
+                <Input
+                  id="assinatura"
+                  placeholder="Introduza a sua assinatura digital"
+                  {...register("assinatura")}
+                />
+                {errors.assinatura && (
+                  <p className="text-sm text-red-400">{errors.assinatura.message}</p>
+                )}
+              </div>
+              <div className="flex justify-end pt-4">
                 <Button type="submit" variant="primary" disabled={isSubmitting}>
                   {isSubmitting ? "A registar..." : "Registar Lote de Matéria-Prima"}
                 </Button>
