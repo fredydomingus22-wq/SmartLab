@@ -32,11 +32,11 @@ const suppliers = [
 ];
 
 const schema = z.object({
-  codigo: z.string().min(3, "Informe o código do lote."),
-  material: z.string().min(1, "Selecione o material."),
-  fornecedor: z.string().min(1, "Selecione o fornecedor."),
-  data: z.string().min(1, "Informe a data de recebimento."),
-  quantidade: z.string().min(1, "Informe a quantidade."),
+  codigo: z.string().min(3, "O código do lote de matéria-prima é obrigatório."),
+  material: z.string().min(1, "É obrigatório selecionar a matéria-prima."),
+  fornecedor: z.string().min(1, "É obrigatório selecionar o fornecedor."),
+  data: z.string().min(1, "A data de recebimento é obrigatória."),
+  quantidade: z.string().min(1, "A quantidade recebida é obrigatória."),
   status: z.enum(["quarentena", "liberado", "bloqueado"]),
 });
 
@@ -65,9 +65,9 @@ export default function CreateRawMaterialLotPage() {
   const statusValue = watch("status");
   const statusCopy = useMemo(
     () => ({
-      quarentena: { label: "Quarentena", helper: "Aguardando COA" },
-      liberado: { label: "Liberado", helper: "Disponível para produção" },
-      bloqueado: { label: "Bloqueado", helper: "NC aberta" },
+      quarentena: { label: "Em Quarentena", helper: "A aguardar análise do Certificado de Análise (COA)." },
+      liberado: { label: "Liberado", helper: "Disponível para utilização na produção." },
+      bloqueado: { label: "Bloqueado", helper: "Foi aberta uma Não Conformidade para este lote." },
     }),
     []
   );
@@ -80,33 +80,33 @@ export default function CreateRawMaterialLotPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Matéria-prima</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Receber lote de matéria-prima</h1>
-          <p className="text-slate-400">Registre inspeções de recebimento e status de quarentena.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Lotes de Matéria-Prima » Registar</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Registar Novo Lote de Matéria-Prima</h1>
+          <p className="text-slate-400">Registe a entrada de um novo lote de matéria-prima, incluindo o seu estado inicial.</p>
         </div>
         <Button variant="ghost" asChild>
-          <Link href="/raw-material-lots">Voltar</Link>
+          <Link href="/raw-material-lots">Cancelar</Link>
         </Button>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900 bg-slate-950/70">
           <CardHeader>
-            <CardTitle>Ficha do lote</CardTitle>
-            <CardDescription>Informações mínimas para rastrear o recebimento.</CardDescription>
+            <CardTitle>Formulário de Registo</CardTitle>
+            <CardDescription>Informações essenciais para a rastreabilidade do lote de matéria-prima.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="codigo">Código</Label>
+                <Label htmlFor="codigo">Código do Lote</Label>
                 <Input id="codigo" placeholder="RML-2024-0915-01" {...register("codigo")} />
                 {errors.codigo && <p className="text-sm text-red-400">{errors.codigo.message}</p>}
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="material">Material</Label>
+                  <Label htmlFor="material">Matéria-Prima</Label>
                   <Select id="material" {...register("material")}>
-                    <option value="">Selecione</option>
+                    <option value="">Selecione a matéria-prima</option>
                     {materials.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -118,7 +118,7 @@ export default function CreateRawMaterialLotPage() {
                 <div className="space-y-2">
                   <Label htmlFor="fornecedor">Fornecedor</Label>
                   <Select id="fornecedor" {...register("fornecedor")}>
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o fornecedor</option>
                     {suppliers.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -132,12 +132,12 @@ export default function CreateRawMaterialLotPage() {
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="data">Data de recebimento</Label>
+                  <Label htmlFor="data">Data de Recebimento</Label>
                   <Input id="data" type="datetime-local" {...register("data")} />
                   {errors.data && <p className="text-sm text-red-400">{errors.data.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="quantidade">Quantidade</Label>
+                  <Label htmlFor="quantidade">Quantidade (Kg)</Label>
                   <Input id="quantidade" type="number" step="0.01" {...register("quantidade")} />
                   {errors.quantidade && (
                     <p className="text-sm text-red-400">{errors.quantidade.message}</p>
@@ -145,16 +145,16 @@ export default function CreateRawMaterialLotPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Estado do Lote</Label>
                 <Select id="status" {...register("status")}>
-                  <option value="quarentena">Quarentena</option>
+                  <option value="quarentena">Em Quarentena</option>
                   <option value="liberado">Liberado</option>
                   <option value="bloqueado">Bloqueado</option>
                 </Select>
               </div>
               <div className="flex justify-end">
                 <Button type="submit" variant="primary" disabled={isSubmitting}>
-                  {isSubmitting ? "Registrando..." : "Registrar lote"}
+                  {isSubmitting ? "A registar..." : "Registar Lote de Matéria-Prima"}
                 </Button>
               </div>
             </form>
@@ -163,14 +163,14 @@ export default function CreateRawMaterialLotPage() {
 
         <Card className="border-slate-900 bg-slate-950/60">
           <CardHeader>
-            <CardTitle>Status operacional</CardTitle>
-            <CardDescription>Atualizado conforme o formulário.</CardDescription>
+            <CardTitle>Estado Operacional</CardTitle>
+            <CardDescription>Atualizado com base na sua seleção.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-2xl border border-slate-900/80 bg-slate-950/60 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-400">Situação atual</p>
+                  <p className="text-sm text-slate-400">Situação Atual</p>
                   <p className="text-base text-white">{statusCopy[statusValue].label}</p>
                 </div>
                 <Badge variant={statusValue === "bloqueado" ? "danger" : statusValue === "liberado" ? "success" : "warning"}>
@@ -180,11 +180,11 @@ export default function CreateRawMaterialLotPage() {
               <p className="text-xs text-slate-500">{statusCopy[statusValue].helper}</p>
             </div>
             <div className="rounded-2xl border border-slate-900/80 bg-slate-950/60 p-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Checklist</p>
+              <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Checklist de Recebimento</p>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>• Conferir COA anexado</li>
-                <li>• Garantir temperatura de recebimento dentro da faixa</li>
-                <li>• Registrar inspeção visual e lacres</li>
+                <li>• Conferir Certificado de Análise (COA)</li>
+                <li>• Garantir temperatura de recebimento</li>
+                <li>• Registar inspeção visual e estado dos lacres</li>
               </ul>
             </div>
           </CardContent>

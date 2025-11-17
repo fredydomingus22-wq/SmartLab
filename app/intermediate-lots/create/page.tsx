@@ -35,13 +35,13 @@ const tankOptions = [
 ];
 
 const intermediateLotSchema = z.object({
-  codigo: z.string().min(4, "Informe o código do lote."),
-  lotePai: z.string().min(1, "Selecione o lote pai."),
-  tanque: z.string().min(1, "Informe o tanque."),
-  brix: z.string().min(1, "Defina o Brix."),
-  ph: z.string().min(1, "Defina o pH."),
-  acidez: z.string().min(1, "Defina a acidez."),
-  dataPreparacao: z.string().min(1, "Informe a data de preparação."),
+  codigo: z.string().min(4, "O código do lote intermédio é obrigatório."),
+  lotePai: z.string().min(1, "É obrigatório selecionar o lote de produção (lote pai)."),
+  tanque: z.string().min(1, "É obrigatório informar o tanque de xarope."),
+  brix: z.string().min(1, "O valor de Brix é obrigatório."),
+  ph: z.string().min(1, "O valor de pH é obrigatório."),
+  acidez: z.string().min(1, "O valor da acidez é obrigatório."),
+  dataPreparacao: z.string().min(1, "A data de preparação é obrigatória."),
 });
 
 type IntermediateLotFormValues = z.infer<typeof intermediateLotSchema>;
@@ -94,22 +94,22 @@ export default function CreateIntermediateLotPage() {
 
     return [
       {
-        label: "Brix",
+        label: "Brix (°Bx)",
         value: brixValue || "—",
         status: resolveStatus(brixNumber, 62.5, 64.5),
-        helper: "Target 63 ±0.5 °Bx",
+        helper: "Especificação: 63 ±0.5 °Bx",
       },
       {
         label: "pH",
         value: phValue || "—",
         status: resolveStatus(phNumber, 3.05, 3.25),
-        helper: "Target 3.15 ±0.1",
+        helper: "Especificação: 3.15 ±0.1",
       },
       {
-        label: "Acidez",
+        label: "Acidez (%)",
         value: acidezValue ? `${acidezValue}%` : "—",
         status: resolveStatus(acidezNumber, 0.22, 0.32),
-        helper: "Target 0.27 ±0.05%",
+        helper: "Especificação: 0.27 ±0.05%",
       },
     ];
   }, [acidezValue, brixValue, phValue]);
@@ -122,18 +122,18 @@ export default function CreateIntermediateLotPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Intermediários · Novo lote</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Registrar lote intermédio</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Produtos Intermédios » Registar</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Registar Produto Intermédio</h1>
           <p className="text-slate-400">
-            Configure parâmetros de preparo para liberar o xarope alinhado ao lote pai e PCCs.
+            Registe os parâmetros de preparação do xarope, associando-o a um Lote de Produção.
           </p>
         </div>
         <div className="flex gap-3">
           <Button variant="ghost" asChild>
-            <Link href="/intermediate-lots">Voltar</Link>
+            <Link href="/intermediate-lots">Cancelar</Link>
           </Button>
           <Button variant="secondary" type="button" onClick={() => reset()}>
-            Limpar campos
+            Limpar
           </Button>
         </div>
       </div>
@@ -142,20 +142,20 @@ export default function CreateIntermediateLotPage() {
         <div className="grid gap-6 xl:grid-cols-[3fr,2fr]">
           <Card className="border-slate-900 bg-slate-950/70">
             <CardHeader>
-              <CardTitle>Ficha técnica</CardTitle>
-              <CardDescription>Preencha a composição do lote intermédio.</CardDescription>
+              <CardTitle>Formulário de Registo</CardTitle>
+              <CardDescription>Preencha os dados de composição do xarope.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="codigo">Código</Label>
+                  <Label htmlFor="codigo">Código do Lote Intermédio</Label>
                   <Input id="codigo" placeholder="IL-2024-09-044" {...register("codigo")} />
                   {errors.codigo && <p className="text-sm text-red-400">{errors.codigo.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lotePai">Lote Pai</Label>
+                  <Label htmlFor="lotePai">Lote de Produção (Pai)</Label>
                   <Select id="lotePai" {...register("lotePai")}>
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o lote de produção</option>
                     {parentLotOptions.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -165,9 +165,9 @@ export default function CreateIntermediateLotPage() {
                   {errors.lotePai && <p className="text-sm text-red-400">{errors.lotePai.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tanque">Tanque</Label>
+                  <Label htmlFor="tanque">Tanque de Xarope</Label>
                   <Select id="tanque" {...register("tanque")}>
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o tanque</option>
                     {tankOptions.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -177,7 +177,7 @@ export default function CreateIntermediateLotPage() {
                   {errors.tanque && <p className="text-sm text-red-400">{errors.tanque.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="brix">Brix</Label>
+                  <Label htmlFor="brix">Brix (°Bx)</Label>
                   <Input id="brix" type="number" step="0.1" placeholder="63.5" {...register("brix")} />
                   {errors.brix && <p className="text-sm text-red-400">{errors.brix.message}</p>}
                 </div>
@@ -192,7 +192,7 @@ export default function CreateIntermediateLotPage() {
                   {errors.acidez && <p className="text-sm text-red-400">{errors.acidez.message}</p>}
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="dataPreparacao">Data de preparação</Label>
+                  <Label htmlFor="dataPreparacao">Data e Hora da Preparação</Label>
                   <Input
                     id="dataPreparacao"
                     type="datetime-local"
@@ -206,13 +206,13 @@ export default function CreateIntermediateLotPage() {
             </CardContent>
             <CardFooter className="flex flex-col gap-4 border-t border-slate-900/80 bg-slate-950/40 p-6 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="text-sm text-slate-300">Resumo</p>
+                <p className="text-sm text-slate-300">Estado</p>
                 <p className="text-xs text-slate-500">
-                  {lotePaiValue ? `Lote pai ${lotePaiValue} em ${tanqueValue || "tanque indefinido"}` : "Selecione o lote pai para liberar o preparo."}
+                  {lotePaiValue ? `Lote Pai ${lotePaiValue} em ${tanqueValue || "tanque indefinido"}` : "Selecione um lote pai para continuar."}
                 </p>
               </div>
               <Button type="submit" variant="primary" className="min-w-[200px]" disabled={isSubmitting}>
-                {isSubmitting ? "Registrando..." : "Registrar lote intermédio"}
+                {isSubmitting ? "A registar..." : "Registar Produto Intermédio"}
               </Button>
             </CardFooter>
           </Card>
@@ -220,8 +220,8 @@ export default function CreateIntermediateLotPage() {
           <div className="space-y-6">
             <Card className="border-slate-900/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
               <CardHeader>
-                <CardTitle>Janela de processo</CardTitle>
-                <CardDescription>Validação imediata das principais especificações.</CardDescription>
+                <CardTitle>Parâmetros de Controlo</CardTitle>
+                <CardDescription>Validação em tempo real com as especificações.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {specHighlights.map((item) => (
@@ -241,11 +241,11 @@ export default function CreateIntermediateLotPage() {
 
             <Card className="border-slate-900/70 bg-slate-950/60">
               <CardHeader>
-                <CardTitle>Checklist rápido</CardTitle>
-                <CardDescription>Confirme alinhamento com o lote pai.</CardDescription>
+                <CardTitle>Checklist de Registo</CardTitle>
+                <CardDescription>Confirme a associação com o lote pai.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {[{ label: "Código", value: codigoValue || "Defina o código" }, { label: "Lote pai", value: lotePaiValue || "Selecione" }, { label: "Data", value: dataValue ? new Date(dataValue).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "Planeje a data" }].map((item) => (
+                {[{ label: "Código do Lote Intermédio", value: codigoValue || "Defina o código" }, { label: "Lote de Produção (Pai)", value: lotePaiValue || "Selecione o lote pai" }, { label: "Data de Preparação", value: dataValue ? new Date(dataValue).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "Defina a data" }].map((item) => (
                   <div key={item.label} className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 rounded-full bg-slate-500" />
                     <div>

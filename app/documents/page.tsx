@@ -58,7 +58,7 @@ export default function DocumentsPage() {
           <p className="text-slate-400">Centralize políticas, procedimentos e formulários controlados.</p>
         </div>
         <Button variant="primary" asChild>
-          <Link href="/documents/create">Upload</Link>
+          <Link href="/documents/create">Carregar Documento</Link>
         </Button>
       </div>
 

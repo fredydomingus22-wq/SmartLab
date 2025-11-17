@@ -148,10 +148,10 @@ const testsVolume: Record<TestRangeKey, number> = {
 };
 
 const testsRangeLabels: Record<TestRangeKey, string> = {
-  daily: "Last 24h",
-  weekly: "Last 7d",
-  monthly: "Last 30d",
-  yearly: "Year to date",
+  daily: "Últ. 24h",
+  weekly: "Últ. 7d",
+  monthly: "Últ. 30d",
+  yearly: "Acumulado Anual",
 };
 
 const analystsRanking = [
@@ -416,9 +416,9 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <section className="grid gap-4 xl:grid-cols-[2fr,1fr]">
         <div className="rounded-[28px] border border-slate-900/80 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8 shadow-[0_20px_80px_rgba(2,6,23,0.65)]">
-          <p className="text-sm text-slate-400">Welcome back,</p>
+          <p className="text-sm text-slate-400">Bem-vindo de volta,</p>
           <h1 className="mt-2 text-4xl font-semibold text-white">{userName}!</h1>
-          <p className="mt-2 text-lg text-slate-300">Here is your SmartLab Quality Overview</p>
+          <p className="mt-2 text-lg text-slate-300">Este é o seu Painel de Controlo da Qualidade SmartLab.</p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {parameterConfigs[selectedParameter] && (
               <div className="rounded-2xl border border-slate-900/80 bg-slate-950/60 p-4">
@@ -470,7 +470,7 @@ export default function DashboardPage() {
           <CardHeader className="px-0">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <CardTitle>Process window</CardTitle>
+                <CardTitle>Janela de Processo</CardTitle>
                 <CardDescription>
                   {parameterConfigs[selectedParameter].label} • {testsRangeLabels.daily}
                 </CardDescription>
@@ -532,15 +532,15 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-6">
           <Card className="rounded-3xl border border-slate-900/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 shadow-[0_25px_80px_rgba(2,6,23,0.45)]">
             <CardHeader className="px-0">
-              <CardTitle>Total Tests</CardTitle>
+              <CardTitle>Total de Análises</CardTitle>
               <CardDescription>{testsRangeLabels[testsRange]}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 px-0">
               <Select value={testsRange} onChange={(event) => setTestsRange(event.target.value as TestRangeKey)}>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
+                <option value="daily">Diário</option>
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensal</option>
+                <option value="yearly">Anual</option>
               </Select>
               <p className="text-5xl font-semibold text-white">{totalTestsValue}</p>
               <p className="text-sm text-slate-400">Ensaios sincronizados com LIMS SmartLab.</p>
@@ -548,8 +548,8 @@ export default function DashboardPage() {
           </Card>
           <Card className="rounded-3xl border border-slate-900/70 bg-slate-950/80 p-6 shadow-[0_20px_70px_rgba(2,6,23,0.45)]">
             <CardHeader className="px-0">
-              <CardTitle>Top 3 Analysts – This Month</CardTitle>
-              <CardDescription>Rankeados por análises registradas</CardDescription>
+              <CardTitle>Top 3 Analistas – Mês</CardTitle>
+              <CardDescription>Rankeados por análises registadas</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 px-0">
               {analystsRanking.map((analyst, index) => (
@@ -572,8 +572,8 @@ export default function DashboardPage() {
       <section className="grid gap-6 lg:grid-cols-2">
         <Card className="rounded-3xl border border-slate-900/70 bg-slate-950/70 p-6 shadow-[0_20px_80px_rgba(2,6,23,0.45)]">
           <CardHeader className="px-0">
-            <CardTitle>Product Distribution</CardTitle>
-            <CardDescription>Últimos 24h</CardDescription>
+            <CardTitle>Distribuição por Produto</CardTitle>
+            <CardDescription>Últimas 24h</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
             <ResponsiveContainer width="100%" height={260}>
@@ -594,7 +594,7 @@ export default function DashboardPage() {
         </Card>
         <Card className="rounded-3xl border border-slate-900/70 bg-slate-950/70 p-6 shadow-[0_20px_80px_rgba(2,6,23,0.45)]">
           <CardHeader className="px-0">
-            <CardTitle>Line Activity</CardTitle>
+            <CardTitle>Atividade das Linhas</CardTitle>
             <CardDescription>Distribuição de status por hora</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
@@ -608,9 +608,9 @@ export default function DashboardPage() {
                   labelStyle={{ color: "#e2e8f0" }}
                 />
                 <Legend wrapperStyle={{ color: "#94a3b8" }} />
-                <Bar dataKey="running" stackId="a" fill="#34d399" name="Running" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="running" stackId="a" fill="#34d399" name="Em Produção" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="changeover" stackId="a" fill="#fbbf24" name="Troca" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="downtime" stackId="a" fill="#f87171" name="Downtime" radius={[0, 0, 6, 6]} />
+                <Bar dataKey="downtime" stackId="a" fill="#f87171" name="Parado" radius={[0, 0, 6, 6]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -783,7 +783,7 @@ export default function DashboardPage() {
       <SidePanel
         open={Boolean(selectedLot)}
         title={selectedLot ? `${selectedLot.lotCode} — ${selectedLot.product}` : undefined}
-        description="Últimos 8 ensaios laboratoriais registrados"
+        description="Últimos 8 ensaios laboratoriais registados"
         onClose={() => setSelectedLot(null)}
         footer={
           <div className="flex justify-end">

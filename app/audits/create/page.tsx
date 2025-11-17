@@ -10,37 +10,37 @@ export default function CreateAuditPage() {
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Schedule Audit</h1>
-          <p className="text-muted-foreground">Define scope and assign auditor.</p>
+          <h1 className="text-3xl font-bold">Agendar Auditoria</h1>
+          <p className="text-muted-foreground">Defina o âmbito e atribua um auditor.</p>
         </div>
         <Button variant="outline" asChild>
-          <Link href="/audits">Back</Link>
+          <Link href="/audits">Voltar</Link>
         </Button>
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Audit Details</CardTitle>
+          <CardTitle>Detalhes da Auditoria</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="type">Audit Type</Label>
+              <Label htmlFor="type">Tipo de Auditoria</Label>
               <Select id="type" defaultValue="internal">
-                <option value="internal">Internal</option>
-                <option value="external">External</option>
-                <option value="customer">Customer</option>
+                <option value="internal">Interna</option>
+                <option value="external">Externa</option>
+                <option value="customer">Cliente</option>
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="standard">Standard</Label>
-              <Input id="standard" placeholder="e.g. FSSC 22000" />
+              <Label htmlFor="standard">Norma</Label>
+              <Input id="standard" placeholder="ex: FSSC 22000" />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="auditor">Auditor</Label>
-              <Input id="auditor" placeholder="Responsible auditor" />
+              <Input id="auditor" placeholder="Auditor responsável" />
             </div>
             <Button type="submit" className="justify-self-start">
-              Schedule
+              Agendar
             </Button>
           </form>
         </CardContent>

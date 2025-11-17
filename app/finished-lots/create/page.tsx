@@ -43,14 +43,14 @@ const specWindows = {
 type SpecKey = keyof typeof specWindows;
 
 const createFinishedLotSchema = z.object({
-  codigoPf: z.string().min(4, "Informe o código do lote."),
-  loteIntermedio: z.string().min(1, "Selecione o lote intermédio."),
-  linha: z.string().min(1, "Selecione a linha."),
-  co2: z.coerce.number().min(0, "Informe o valor de CO₂."),
-  brix: z.coerce.number().min(0, "Informe o valor de Brix."),
-  ph: z.coerce.number().min(0, "Informe o valor de pH."),
-  densidade: z.coerce.number().min(0, "Informe o valor de densidade."),
-  dataAnalise: z.string().min(1, "Defina a data/hora da análise."),
+  codigoPf: z.string().min(4, "O código do lote de produto acabado é obrigatório."),
+  loteIntermedio: z.string().min(1, "É obrigatório selecionar o lote de produto intermédio."),
+  linha: z.string().min(1, "É obrigatório selecionar a linha de produção."),
+  co2: z.coerce.number().min(0, "O valor de CO₂ é obrigatório."),
+  brix: z.coerce.number().min(0, "O valor de Brix é obrigatório."),
+  ph: z.coerce.number().min(0, "O valor de pH é obrigatório."),
+  densidade: z.coerce.number().min(0, "O valor de densidade é obrigatório."),
+  dataAnalise: z.string().min(1, "A data e hora da análise são obrigatórias."),
 });
 
 type CreateFinishedLotValues = z.infer<typeof createFinishedLotSchema>;
@@ -144,37 +144,37 @@ export default function CreateFinishedLotPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Produto final · Registro</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Novo lote de produto final</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Produtos Acabados » Registar</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Registar Nova Análise de Produto Acabado</h1>
           <p className="text-slate-400">
-            Capture medições críticas para liberar o lote e conectar à rastreabilidade do lote intermédio.
+            Registe as medições laboratoriais para libertação e rastreabilidade do lote.
           </p>
         </div>
         <Button variant="ghost" asChild>
-          <Link href="/finished-lots">Voltar</Link>
+          <Link href="/finished-lots">Cancelar</Link>
         </Button>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900/80 bg-slate-950/70">
           <CardHeader>
-            <CardTitle>Ficha analítica</CardTitle>
-            <CardDescription>Preencha os dados laboratoriais antes de liberar o lote final.</CardDescription>
+            <CardTitle>Formulário de Análise</CardTitle>
+            <CardDescription>Preencha os dados laboratoriais para o lote de produto acabado.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="codigoPf">Código PF</Label>
+                  <Label htmlFor="codigoPf">Código do Lote de PA</Label>
                   <Input id="codigoPf" placeholder="FL-2024-09-032" {...register("codigoPf")} />
                   {errors.codigoPf && (
                     <p className="text-sm text-red-400">{errors.codigoPf.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="loteIntermedio">Lote intermédio</Label>
+                  <Label htmlFor="loteIntermedio">Produto Intermédio</Label>
                   <Select id="loteIntermedio" {...register("loteIntermedio")}>
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o lote intermédio</option>
                     {intermediateLotOptions.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -186,7 +186,7 @@ export default function CreateFinishedLotPage() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="linha">Linha</Label>
+                  <Label htmlFor="linha">Linha de Produção</Label>
                   <Select id="linha" {...register("linha")}>
                     <option value="">Selecione a linha</option>
                     {lineOptions.map((option) => (
@@ -198,7 +198,7 @@ export default function CreateFinishedLotPage() {
                   {errors.linha && <p className="text-sm text-red-400">{errors.linha.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="dataAnalise">Data/hora da análise</Label>
+                  <Label htmlFor="dataAnalise">Data e Hora da Análise</Label>
                   <Input type="datetime-local" id="dataAnalise" {...register("dataAnalise")} />
                   {errors.dataAnalise && (
                     <p className="text-sm text-red-400">{errors.dataAnalise.message}</p>
@@ -250,20 +250,20 @@ export default function CreateFinishedLotPage() {
 
               <div className="flex flex-col gap-4 rounded-2xl border border-slate-900 bg-slate-950/60 p-6 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <p className="text-sm font-medium text-white">Resumo</p>
+                  <p className="text-sm font-medium text-white">Rastreabilidade</p>
                   <p className="text-xs text-slate-500">
                     {loteIntermedioValue
                       ? `Associado ao ${intermediateLabel} em ${lineLabel || "linha indefinida"}`
-                      : "Selecione lote e linha para sincronizar rastreabilidade"}
+                      : "Selecione o lote intermédio e a linha"}
                   </p>
                   <p className="text-xs text-slate-500">
                     {dataAnaliseLabel
-                      ? `Medição registrada em ${dataAnaliseLabel}`
+                      ? `Análise registada em ${dataAnaliseLabel}`
                       : "Informe a data/hora da análise"}
                   </p>
                 </div>
                 <Button type="submit" variant="primary" className="min-w-[200px]" disabled={isSubmitting}>
-                  {isSubmitting ? "Registrando..." : "Registrar lote final"}
+                  {isSubmitting ? "A registar..." : "Registar Análise de PA"}
                 </Button>
               </div>
             </form>
@@ -273,8 +273,8 @@ export default function CreateFinishedLotPage() {
         <div className="space-y-6">
           <Card className="border-slate-900/70 bg-gradient-to-b from-slate-950 to-slate-900">
             <CardHeader>
-              <CardTitle>Janela de especificação</CardTitle>
-              <CardDescription>Valide se os parâmetros estão dentro do range alvo.</CardDescription>
+              <CardTitle>Janela de Especificação</CardTitle>
+              <CardDescription>Valide se os parâmetros estão dentro dos limites.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {specInsights.map((item) => {
@@ -289,7 +289,7 @@ export default function CreateFinishedLotPage() {
                           <span className="ml-1 text-sm text-slate-500">{spec.unit}</span>
                         </p>
                         <p className="text-xs text-slate-500">
-                          Janela {spec.min.toFixed(2)} – {spec.max.toFixed(2)} {spec.unit}
+                          Limite {spec.min.toFixed(2)} – {spec.max.toFixed(2)} {spec.unit}
                         </p>
                       </div>
                       <Badge variant={item.variant as "success" | "neutral" | "danger"}>{item.helper}</Badge>
@@ -302,31 +302,31 @@ export default function CreateFinishedLotPage() {
 
           <Card className="border-slate-900/60 bg-slate-950/60">
             <CardHeader>
-              <CardTitle>Checklist de liberação</CardTitle>
-              <CardDescription>Atualiza automaticamente conforme o formulário.</CardDescription>
+              <CardTitle>Checklist de Libertação</CardTitle>
+              <CardDescription>O estado é atualizado em tempo real.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {[
                 {
-                  label: "Lote intermédio vinculado",
-                  detail: loteIntermedioValue ? intermediateLabel : "Selecione um lote",
+                  label: "Lote Intermédio Vinculado",
+                  detail: loteIntermedioValue ? intermediateLabel : "Selecione um lote intermédio",
                   ready: Boolean(loteIntermedioValue),
                 },
                 {
-                  label: "Linha configurada",
+                  label: "Linha de Produção Configurada",
                   detail: linhaValue ? lineLabel : "Escolha a linha de envase",
                   ready: Boolean(linhaValue),
                 },
                 {
-                  label: "Dados laboratoriais",
+                  label: "Dados Laboratoriais Completos",
                   detail: hasAllMeasurements
                     ? "Todos os campos preenchidos"
-                    : "Informe CO₂, Brix, pH e Densidade",
+                    : "Preencha CO₂, Brix, pH e Densidade",
                   ready: hasAllMeasurements,
                 },
                 {
-                  label: "Registro temporal",
-                  detail: dataAnaliseLabel ? dataAnaliseLabel : "Defina data/hora",
+                  label: "Registo Temporal Válido",
+                  detail: dataAnaliseLabel ? dataAnaliseLabel : "Defina a data e hora",
                   ready: Boolean(dataAnaliseValue),
                 },
               ].map((item) => (
@@ -341,7 +341,7 @@ export default function CreateFinishedLotPage() {
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-white">{item.label}</p>
-                      <Badge variant={item.ready ? "success" : "warning"}>{item.ready ? "ok" : "pendente"}</Badge>
+                      <Badge variant={item.ready ? "success" : "warning"}>{item.ready ? "OK" : "Pendente"}</Badge>
                     </div>
                     <p className="text-sm text-slate-400">{item.detail}</p>
                   </div>

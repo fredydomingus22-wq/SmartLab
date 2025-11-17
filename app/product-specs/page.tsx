@@ -56,8 +56,8 @@ export default function ProductSpecsPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Product Specs</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Biblioteca de especificações</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Parâmetros & Especificações</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Biblioteca de Especificações</h1>
           <p className="text-slate-400">Defina limites mínimos, alvo e máximo por SKU e parâmetro.</p>
         </div>
         <Button variant="primary" asChild>
