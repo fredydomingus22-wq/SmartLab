@@ -49,6 +49,7 @@ export const sidebarNavItems: NavSection[] = [
   {
     label: "Produção",
     items: [
+      { title: "Linhas de Produção", href: "/production-lines", icon: Workflow },
       { title: "Lotes de Produção", href: "/production-lots", icon: Factory },
       { title: "Produtos Intermédios", href: "/intermediate-lots", icon: Boxes },
       { title: "Produtos Acabados", href: "/finished-lots", icon: PackageCheck },
