@@ -17,19 +17,16 @@ import {
   LayoutDashboard,
   Menu,
   PackageCheck,
-  PackagePlus,
   Route,
   ShieldCheck,
   SlidersHorizontal,
-  SquarePlus,
   Tags,
   TestTube2,
   Thermometer,
-  Wrench,
+  Workflow,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { useI18n } from "@/contexts/i18n-context";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -46,11 +43,11 @@ interface NavSection {
 
 export const sidebarNavItems: NavSection[] = [
   {
-    label: "sidebar_overview",
+    label: "Visão Geral",
     items: [{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
   },
   {
-    label: "sidebar_production",
+    label: "Produção",
     items: [
       { title: "Lotes de Produção", href: "/production-lots", icon: Factory },
       { title: "Produtos Intermédios", href: "/intermediate-lots", icon: Boxes },
@@ -58,30 +55,32 @@ export const sidebarNavItems: NavSection[] = [
     ],
   },
   {
-    label: "sidebar_quality",
-    items: [
-      { title: "Não Conformidades", href: "/nc", icon: AlertTriangle },
-      { title: "Auditorias", href: "/audits", icon: FileSearch },
-      { title: "Food Safety (HACCP)", href: "/food-safety", icon: ShieldCheck },
-      { title: "Rastreabilidade", href: "/traceability", icon: Route },
-    ],
-  },
-  {
-    label: "sidebar_resources",
+    label: "Recursos",
     items: [
       { title: "Produtos", href: "/products", icon: Tags },
-      { title: "Parâmetros & Especificações", href: "/product-specs", icon: SlidersHorizontal },
+      { title: "Parâmetros & Specs", href: "/product-specs", icon: SlidersHorizontal },
       { title: "Matérias-Primas", href: "/raw-materials", icon: FlaskConical },
       { title: "Lotes de Matéria-Prima", href: "/raw-material-lots", icon: TestTube2 },
       { title: "Fornecedores", href: "/suppliers", icon: Handshake },
-      { title: "Equipamentos & Calibração", href: "/equipments", icon: Wrench },
+      { title: "Equipamentos", href: "/equipments", icon: Thermometer },
     ],
   },
   {
-    label: "sidebar_system",
+    label: "Qualidade & Food Safety",
     items: [
-      { title: "Treinamentos", href: "/trainings", icon: GraduationCap },
+      { title: "Análises Laboratoriais", href: "/lab-tests", icon: FlaskConical },
+      { title: "Não Conformidades", href: "/nc", icon: AlertTriangle },
+      { title: "Relatórios 8D", href: "/nc/8d", icon: Workflow },
+      { title: "Auditorias", href: "/audits", icon: FileSearch },
+      { title: "Food Safety (HACCP)", href: "/food-safety", icon: ShieldCheck },
+    ],
+  },
+  {
+    label: "Sistema",
+    items: [
+      { title: "Rastreabilidade", href: "/traceability", icon: Route },
       { title: "Documentos", href: "/documents", icon: FileText },
+      { title: "Treinamentos", href: "/trainings", icon: GraduationCap },
     ],
   },
 ];
@@ -105,7 +104,6 @@ function isActivePath(pathname: string, href: string) {
 
 export function Sidebar({ onNavigate, className }: SidebarProps) {
   const pathname = usePathname();
-  const { t } = useI18n();
 
   return (
     <div
@@ -122,7 +120,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
         {sidebarNavItems.map((section) => (
           <div key={section.label}>
             <p className="px-2 text-xs uppercase tracking-[0.3em] text-slate-500">
-              {t(section.label as any)}
+              {section.label}
             </p>
             <div className="mt-3 space-y-1">
               {section.items.map((item) => {
@@ -146,7 +144,7 @@ export function Sidebar({ onNavigate, className }: SidebarProps) {
                         active ? "text-emerald-400" : "group-hover:text-slate-100"
                       )}
                     />
-                    <span>{t(item.title as any)}</span>
+                    <span>{item.title}</span>
                   </Link>
                 );
               })}

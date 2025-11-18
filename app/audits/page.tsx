@@ -13,24 +13,24 @@ export default function AuditsPage() {
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Auditorias</h1>
-          <p className="text-muted-foreground">Planeie e acompanhe os programas de auditoria.</p>
+          <h1 className="text-3xl font-bold">Audits</h1>
+          <p className="text-muted-foreground">Plan and follow-up on audit programs.</p>
         </div>
         <Button asChild>
-          <Link href="/audits/create">Agendar Auditoria</Link>
+          <Link href="/audits/create">Schedule Audit</Link>
         </Button>
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Registo de Auditorias</CardTitle>
+          <CardTitle>Audit Register</CardTitle>
         </CardHeader>
         <CardContent>
           <SimpleTable
             columns={[
-              { header: "Código", accessor: "id" },
-              { header: "Tipo", accessor: "type" },
-              { header: "Norma", accessor: "standard" },
-              { header: "Estado", accessor: "status" },
+              { header: "Code", accessor: "id" },
+              { header: "Type", accessor: "type" },
+              { header: "Standard", accessor: "standard" },
+              { header: "Status", accessor: "status" },
             ]}
             data={mockAudits}
           />

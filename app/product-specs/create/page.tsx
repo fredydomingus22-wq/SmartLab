@@ -96,24 +96,24 @@ export default function CreateProductSpecPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Parâmetros & Especificações » Registar</p>
-          <h1 className="text-3xl font-semibold text-white">Registar Nova Especificação</h1>
-          <p className="text-slate-400">Mapeie os limites por produto para otimizar a libertação de lotes.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Product Specs · Criação</p>
+          <h1 className="text-3xl font-semibold text-white">Nova especificação</h1>
+          <p className="text-slate-400">Mapeie limites por produto para liberar lotes com agilidade.</p>
         </div>
         <div className="flex gap-3">
           <Button variant="ghost" asChild>
-            <Link href="/product-specs">Cancelar</Link>
+            <Link href="/product-specs">Voltar</Link>
           </Button>
           <Button variant="secondary" type="button" onClick={() => reset()}>
-            Limpar
+            Resetar
           </Button>
         </div>
       </div>
 
       <Card className="border-slate-900 bg-slate-950/70">
         <CardHeader>
-          <CardTitle>Formulário de Registo</CardTitle>
-          <CardDescription>Defina a unidade de medida e a faixa operacional para o parâmetro.</CardDescription>
+          <CardTitle>Parâmetros alvo</CardTitle>
+          <CardDescription>Defina unidade e faixa operacional</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

@@ -53,7 +53,7 @@ export default function CreateDocumentPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Documentação</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Upload de documento</h1>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Upload de Documento</h1>
           <p className="text-slate-400">Controle novas versões de procedimentos, formulários e políticas.</p>
         </div>
         <Button variant="ghost" asChild>

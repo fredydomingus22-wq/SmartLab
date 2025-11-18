@@ -44,14 +44,14 @@ const shiftOptions = [
 const createLotSchema = z.object({
   codigo: z
     .string()
-    .min(4, "O código do lote é obrigatório."),
-  produto: z.string().min(1, "É obrigatório selecionar o produto."),
-  linha: z.string().min(1, "É obrigatório selecionar a linha."),
-  turno: z.string().min(1, "É obrigatório selecionar o turno."),
-  dataInicio: z.string().min(1, "A data de início é obrigatória."),
+    .min(4, "Informe um código válido."),
+  produto: z.string().min(1, "Selecione o produto."),
+  linha: z.string().min(1, "Selecione a linha."),
+  turno: z.string().min(1, "Selecione o turno."),
+  dataInicio: z.string().min(1, "Defina a data de início."),
   observacoes: z
     .string()
-    .max(600, "As observações não podem exceder 600 caracteres.")
+    .max(600, "Máximo de 600 caracteres.")
     .optional()
     .or(z.literal("")),
 });
@@ -94,17 +94,17 @@ export default function CreateProductionLotPage() {
   const readinessCards = useMemo(
     () => [
       {
-        title: "Produto",
+        title: "Produto Definido",
         detail: productLabel ?? "Selecione o SKU",
         status: productLabel ? "success" : "warning",
       },
       {
-        title: "Linha",
+        title: "Linha Preparada",
         detail: lineLabel ?? "Escolha a linha de envase",
         status: lineLabel ? "success" : "warning",
       },
       {
-        title: "Turno",
+        title: "Turno Designado",
         detail: shiftLabel ?? "Indique o turno responsável",
         status: shiftLabel ? "success" : "warning",
       },
@@ -120,18 +120,18 @@ export default function CreateProductionLotPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Lotes de Produção » Registar</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Registar Novo Lote de Produção</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Lotes de Produção » Criação</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Novo Lote de Produção</h1>
           <p className="text-slate-400">
-            Crie um novo Lote de Produção (lote pai) para iniciar o processo de rastreabilidade.
+            Configure o lote pai com contexto de produto, linha e turno para sincronizar envase e laboratório.
           </p>
         </div>
         <div className="flex gap-3">
           <Button variant="ghost" asChild>
-            <Link href="/production-lots">Cancelar</Link>
+            <Link href="/production-lots">Voltar</Link>
           </Button>
           <Button variant="secondary" type="button" onClick={() => reset()}>
-            Limpar
+            Limpar Formulário
           </Button>
         </div>
       </div>
@@ -139,9 +139,9 @@ export default function CreateProductionLotPage() {
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900 bg-slate-950/60">
           <CardHeader>
-            <CardTitle>Formulário de Registo</CardTitle>
+            <CardTitle>Ficha do Lote</CardTitle>
             <CardDescription>
-              Dados obrigatórios para iniciar a preparação, mistura e rastreabilidade do lote.
+              Dados obrigatórios para liberar preparação, mistura e rastreabilidade do lote pai.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -172,7 +172,7 @@ export default function CreateProductionLotPage() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="linha">Linha de Produção</Label>
+                  <Label htmlFor="linha">Linha</Label>
                   <Select id="linha" {...register("linha")}>
                     <option value="">Selecione a linha</option>
                     {lineOptions.map((option) => (
@@ -200,7 +200,7 @@ export default function CreateProductionLotPage() {
                   )}
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="dataInicio">Início da Produção</Label>
+                  <Label htmlFor="dataInicio">Data de Início</Label>
                   <Input
                     id="dataInicio"
                     type="datetime-local"
@@ -224,15 +224,15 @@ export default function CreateProductionLotPage() {
                 </div>
               </div>
 
-              <CardFooter className="flex flex-col gap-4 border-t border-slate-800/70 bg-slate-950/40 p-6 md:flex-row md:items-center md:justify-between">
+              <CardFooter className="flex flex-col gap-4 border border-dashed border-slate-800/70 bg-slate-950/40 p-6 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <p className="text-sm text-slate-300">Estado do Lote</p>
+                  <p className="text-sm text-slate-300">Resumo Instantâneo</p>
                   <p className="text-xs text-slate-500">
-                    {productLabel ? `Produto ${productLabel} em ${lineLabel ?? "linha indefinida"}` : "Preencha os campos para ativar o registo"}
+                    {productLabel ? `Produto ${productLabel} em ${lineLabel ?? "linha indefinida"}` : "Preencha os campos principais para liberar planejamento"}
                   </p>
                 </div>
                 <Button type="submit" variant="primary" className="min-w-[200px]" disabled={isSubmitting}>
-                  {isSubmitting ? "A registar..." : "Registar Lote de Produção"}
+                  {isSubmitting ? "Registando..." : "Registar Lote de Produção"}
                 </Button>
               </CardFooter>
             </form>
@@ -242,8 +242,8 @@ export default function CreateProductionLotPage() {
         <div className="space-y-6">
           <Card className="border-slate-900/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
             <CardHeader>
-              <CardTitle>Checklist de Preparação</CardTitle>
-              <CardDescription>O estado é atualizado em tempo real.</CardDescription>
+              <CardTitle>Checklist Operacional</CardTitle>
+              <CardDescription>Indicadores atualizados conforme você preenche.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {readinessCards.map((card) => (
@@ -267,25 +267,25 @@ export default function CreateProductionLotPage() {
                 <p className="mt-2 text-2xl font-semibold text-white">
                   {dataInicioValue ? new Date(dataInicioValue).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "Defina a data"}
                 </p>
-                <p className="text-xs text-slate-500">Sincronizar com laboratório e PCP.</p>
+                <p className="text-xs text-slate-500">Sincronize com laboratório e PCP.</p>
               </div>
             </CardContent>
           </Card>
 
           <Card className="border-slate-900/70 bg-slate-950/70">
             <CardHeader>
-              <CardTitle>Linha Temporal de Preparação</CardTitle>
-              <CardDescription>Pré-visualização para alinhar as equipas.</CardDescription>
+              <CardTitle>Timeline de Preparação</CardTitle>
+              <CardDescription>Preview automático para comunicar equipes.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {[
                 {
-                  label: "Planeamento",
+                  label: "Planejamento",
                   detail: codigoValue ? `Lote ${codigoValue}` : "Informe o código",
                   status: codigoValue ? "success" : "warning",
                 },
                 {
-                  label: "Mistura",
+                  label: "Mixagem",
                   detail: lineLabel ? `${lineLabel}` : "Linha indefinida",
                   status: lineLabel ? "success" : "warning",
                 },

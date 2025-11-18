@@ -108,12 +108,12 @@ export default function CreateLabTestPage() {
   const readinessTiles = useMemo(
     () => [
       {
-        title: "Tipo analítico",
+        title: "Tipo Analítico",
         detail: tipoLabel ?? "Selecione RM, PI ou PF",
         variant: tipoLabel ? "success" : "warning",
       },
       {
-        title: "Analista designado",
+        title: "Analista Designado",
         detail: analistaLabel ?? "Escolha um responsável",
         variant: analistaLabel ? "success" : "warning",
       },
@@ -138,9 +138,9 @@ export default function CreateLabTestPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Laboratório » Criação</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Novo ensaio laboratorial</h1>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Novo Ensaio Laboratorial</h1>
           <p className="text-slate-400">
-            Registre testes críticos de RM, processo intermédio ou produto final com parâmetros detalhados.
+            Registe testes críticos de RM, processo intermédio ou produto final com parâmetros detalhados.
           </p>
         </div>
         <Button variant="ghost" asChild>
@@ -151,7 +151,7 @@ export default function CreateLabTestPage() {
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900 bg-slate-950/70">
           <CardHeader>
-            <CardTitle>Ficha analítica</CardTitle>
+            <CardTitle>Ficha Analítica</CardTitle>
             <CardDescription>Informações essenciais para rastrear esta análise.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -204,7 +204,7 @@ export default function CreateLabTestPage() {
               <div className="space-y-4">
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-white">Parâmetros monitorados</p>
+                    <p className="text-sm font-semibold text-white">Parâmetros Monitorados</p>
                     <p className="text-sm text-slate-400">Adicione os pontos críticos que foram avaliados.</p>
                   </div>
                   <Button
@@ -218,7 +218,7 @@ export default function CreateLabTestPage() {
                       })
                     }
                   >
-                    Adicionar parâmetro
+                    Adicionar Parâmetro
                   </Button>
                 </div>
 
@@ -274,7 +274,7 @@ export default function CreateLabTestPage() {
                           </Label>
                           <Input
                             id={`parametro-especificacao-${field.id}`}
-                            placeholder="Target / limite"
+                            placeholder="Alvo / limite"
                             {...register(`parametros.${index}.especificacao` as const)}
                           />
                           {errors.parametros?.[index]?.especificacao && (
@@ -301,7 +301,7 @@ export default function CreateLabTestPage() {
                   </p>
                 </div>
                 <Button type="submit" variant="primary" disabled={isSubmitting}>
-                  {isSubmitting ? "Registrando..." : "Registrar análise"}
+                  {isSubmitting ? "Registando..." : "Registar Análise"}
                 </Button>
               </CardFooter>
             </form>
@@ -311,7 +311,7 @@ export default function CreateLabTestPage() {
         <div className="space-y-6">
           <Card className="border-slate-900 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
             <CardHeader>
-              <CardTitle>Checklist de prontidão</CardTitle>
+              <CardTitle>Checklist de Prontidão</CardTitle>
               <CardDescription>Atualiza conforme você preenche o formulário.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -326,7 +326,7 @@ export default function CreateLabTestPage() {
                       <p className="text-base text-white">{tile.detail}</p>
                     </div>
                     <Badge variant={tile.variant === "success" ? "success" : "warning"}>
-                      {tile.variant === "success" ? "ok" : "pendente"}
+                      {tile.variant === "success" ? "OK" : "Pendente"}
                     </Badge>
                   </div>
                 </div>
@@ -336,8 +336,8 @@ export default function CreateLabTestPage() {
 
           <Card className="border-slate-900 bg-slate-950/70">
             <CardHeader>
-              <CardTitle>Insights rápidos</CardTitle>
-              <CardDescription>Cubra specs e responsabilização.</CardDescription>
+              <CardTitle>Insights Rápidos</CardTitle>
+              <CardDescription>Cubra especificações e responsabilização.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm text-slate-300">
               <div className="rounded-xl border border-slate-900/80 bg-slate-950/60 p-4">
@@ -346,12 +346,12 @@ export default function CreateLabTestPage() {
                 <p className="text-xs text-slate-500">Total configurado(s)</p>
               </div>
               <div className="rounded-xl border border-slate-900/80 bg-slate-950/60 p-4">
-                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Com resultado</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Com Resultado</p>
                 <p className="mt-2 text-2xl font-semibold text-white">{parameterStats.filled}</p>
-                <p className="text-xs text-slate-500">Itens com valor registrado</p>
+                <p className="text-xs text-slate-500">Itens com valor registado</p>
               </div>
               <div className="rounded-xl border border-slate-900/80 bg-slate-950/60 p-4">
-                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Com especificação</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Com Especificação</p>
                 <p className="mt-2 text-2xl font-semibold text-white">{parameterStats.specs}</p>
                 <p className="text-xs text-slate-500">Itens com faixa alvo ou limite</p>
               </div>

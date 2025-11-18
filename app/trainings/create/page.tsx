@@ -20,7 +20,6 @@ const trainingSchema = z.object({
   validade: z
     .coerce.number({ invalid_type_error: "Informe a validade em meses." })
     .min(1, "Mínimo 1 mês."),
-  assinatura: z.string().min(3, "A assinatura do analista é obrigatória."),
 });
 
 type TrainingFormValues = z.infer<typeof trainingSchema>;
@@ -62,7 +61,7 @@ export default function CreateTrainingPage() {
         variant: instrutorValue ? "success" : "warning",
       },
       {
-        label: "Data agendada",
+        label: "Data Agendada",
         value: dataValue ? new Date(dataValue).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "Definir",
         variant: dataValue ? "success" : "warning",
       },
@@ -84,7 +83,7 @@ export default function CreateTrainingPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Treinamentos » Criar</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Novo programa de treinamento</h1>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Novo Programa de Treinamento</h1>
           <p className="text-slate-400">Estruture título, instrutor responsável e validade corporativa.</p>
         </div>
         <Button variant="ghost" asChild>
@@ -95,7 +94,7 @@ export default function CreateTrainingPage() {
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900 bg-slate-950/70">
           <CardHeader>
-            <CardTitle>Detalhes do programa</CardTitle>
+            <CardTitle>Detalhes do Programa</CardTitle>
             <CardDescription>Campos obrigatórios para liberação do treinamento.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -129,20 +128,9 @@ export default function CreateTrainingPage() {
                   {errors.validade && <p className="text-sm text-red-400">{errors.validade.message}</p>}
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="assinatura">Assinatura do Analista</Label>
-                <Input
-                  id="assinatura"
-                  placeholder="Introduza a sua assinatura digital"
-                  {...register("assinatura")}
-                />
-                {errors.assinatura && (
-                  <p className="text-sm text-red-400">{errors.assinatura.message}</p>
-                )}
-              </div>
-              <div className="flex justify-end pt-4">
+              <div className="flex justify-end">
                 <Button type="submit" variant="primary" disabled={isSubmitting} className="min-w-[200px]">
-                  {isSubmitting ? "Salvando..." : "Salvar treinamento"}
+                  {isSubmitting ? "Salvando..." : "Salvar Treinamento"}
                 </Button>
               </div>
             </form>
@@ -151,7 +139,7 @@ export default function CreateTrainingPage() {
 
         <Card className="border-slate-900/70 bg-slate-950/60">
           <CardHeader>
-            <CardTitle>Checklist de prontidão</CardTitle>
+            <CardTitle>Checklist de Prontidão</CardTitle>
             <CardDescription>Atualiza conforme os campos são preenchidos.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -163,7 +151,7 @@ export default function CreateTrainingPage() {
                     <p className="text-base text-white">{item.value}</p>
                   </div>
                   <Badge variant={item.variant === "success" ? "success" : "warning"}>
-                    {item.variant === "success" ? "ok" : "pendente"}
+                    {item.variant === "success" ? "OK" : "Pendente"}
                   </Badge>
                 </div>
               </div>

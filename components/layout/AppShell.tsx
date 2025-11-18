@@ -3,8 +3,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useI18n } from "@/contexts/i18n-context";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Sidebar, { sidebarNavItems } from "./Sidebar";
 
@@ -14,7 +12,6 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
-  const { language, setLanguage } = useI18n();
 
   const mobileNavItems = sidebarNavItems.flatMap((section) => section.items);
 
@@ -61,13 +58,9 @@ export function AppShell({ children }: AppShellProps) {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setLanguage(language === "pt" ? "en" : "pt")}
-              >
-                {language === "pt" ? "EN" : "PT"}
-              </Button>
+              <span className="rounded-full border border-slate-800 px-3 py-1 text-xs uppercase tracking-wide text-slate-400">
+                v0.1 Labs
+              </span>
             </div>
           </header>
           <div className="space-y-6">{children}</div>

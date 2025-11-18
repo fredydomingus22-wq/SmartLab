@@ -35,25 +35,25 @@ export default function SignInPage() {
         </div>
         <Card className="border-slate-900/80 bg-slate-950/90 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl text-white">Aceder</CardTitle>
+            <CardTitle className="text-2xl text-white">Sign in</CardTitle>
             <CardDescription className="text-slate-400">
-              Informe as suas credenciais para continuar.
+              Informe suas credenciais corporativas para continuar.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email">Email Corporativo</Label>
+                <Label htmlFor="email">Email corporativo</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="gestor.qualidade@smartlab.io"
+                  placeholder="qa.manager@smartlab.io"
                   className="bg-slate-950/40"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Palavra-passe</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -63,7 +63,7 @@ export default function SignInPage() {
                 />
               </div>
               <Button type="submit" variant="primary" className="w-full">
-                Aceder
+                Sign in
               </Button>
             </form>
           </CardContent>
