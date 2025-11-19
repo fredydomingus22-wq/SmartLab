@@ -29,6 +29,9 @@ import {
   Component,
   TestTubes,
   Gauge,
+  Microscope,
+  Beaker,
+  Droplet,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -59,6 +62,26 @@ export const sidebarNavItems: NavSection[] = [
       { title: "Linha/Produto", href: "/data-intelligence/product-line-analysis", icon: Component },
       { title: "Amostras", href: "/data-intelligence/sample-pipeline", icon: TestTubes },
       { title: "Equipamentos", href: "/data-intelligence/equipment-status", icon: Gauge },
+    ],
+  },
+  {
+    label: "Microbiologia",
+    items: [
+      {
+        title: "Monitoramento Ambiental",
+        href: "/microbiology/environmental-monitoring",
+        icon: Microscope,
+      },
+      {
+        title: "Análise de Produto",
+        href: "/microbiology/product-analysis",
+        icon: Beaker,
+      },
+      {
+        title: "Análise de Água",
+        href: "/microbiology/water-analysis",
+        icon: Droplet,
+      },
     ],
   },
   {
