@@ -24,6 +24,11 @@ import {
   TestTube2,
   Thermometer,
   Workflow,
+  BarChart3,
+  Sigma,
+  Component,
+  TestTubes,
+  Gauge,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -45,6 +50,16 @@ export const sidebarNavItems: NavSection[] = [
   {
     label: "Visão Geral",
     items: [{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
+  },
+  {
+    label: "Analytics",
+    items: [
+      { title: "Executive Overview", href: "/data-intelligence/executive-overview", icon: BarChart3 },
+      { title: "Parâmetros", href: "/data-intelligence/parameter-performance", icon: Sigma },
+      { title: "Linha/Produto", href: "/data-intelligence/product-line-analysis", icon: Component },
+      { title: "Amostras", href: "/data-intelligence/sample-pipeline", icon: TestTubes },
+      { title: "Equipamentos", href: "/data-intelligence/equipment-status", icon: Gauge },
+    ],
   },
   {
     label: "Produção",
