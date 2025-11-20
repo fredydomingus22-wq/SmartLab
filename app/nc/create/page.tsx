@@ -57,7 +57,7 @@ export default function CreateNcPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">NC · Criação</p>
-          <h1 className="text-3xl font-semibold text-white">Registrar não conformidade</h1>
+          <h1 className="text-3xl font-semibold text-white">Registar Não Conformidade</h1>
           <p className="text-slate-400">Descreva o desvio para disparar 8D e planos de ação.</p>
         </div>
         <div className="flex gap-3">
@@ -65,14 +65,14 @@ export default function CreateNcPage() {
             <Link href="/nc">Voltar</Link>
           </Button>
           <Button variant="secondary" type="button" onClick={() => reset()}>
-            Resetar
+            Limpar
           </Button>
         </div>
       </div>
 
       <Card className="border-slate-900 bg-slate-950/70">
         <CardHeader>
-          <CardTitle>Detalhes do desvio</CardTitle>
+          <CardTitle>Detalhes do Desvio</CardTitle>
           <CardDescription>Tipo, severidade e responsável</CardDescription>
         </CardHeader>
         <CardContent>
@@ -91,8 +91,8 @@ export default function CreateNcPage() {
               <div className="space-y-2">
                 <Label htmlFor="severidade">Severidade</Label>
                 <Select id="severidade" {...register("severidade")}>
-                  <option value="minor">Minor</option>
-                  <option value="major">Major</option>
+                  <option value="minor">Menor</option>
+                  <option value="major">Maior</option>
                   <option value="critica">Crítica</option>
                 </Select>
                 {errors.severidade && <p className="text-sm text-red-400">{errors.severidade.message}</p>}
@@ -120,7 +120,7 @@ export default function CreateNcPage() {
                 <p className="text-xs text-slate-500">Tipo e severidade definidos acionam fluxo 8D automaticamente.</p>
               </div>
               <Button type="submit" variant="primary" disabled={isSubmitting} className="min-w-[200px]">
-                {isSubmitting ? "Registrando..." : "Abrir NC"}
+                {isSubmitting ? "Registando..." : "Abrir NC"}
               </Button>
             </CardFooter>
           </form>

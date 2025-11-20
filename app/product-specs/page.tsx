@@ -56,13 +56,18 @@ export default function ProductSpecsPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Product Specs</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Biblioteca de especificações</h1>
-          <p className="text-slate-400">Defina limites mínimos, alvo e máximo por SKU e parâmetro.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Parâmetros & Specs</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Biblioteca de Especificações</h1>
+          <p className="text-slate-400">Defina limites mínimos, alvo e máximos por SKU e parâmetro.</p>
         </div>
-        <Button variant="primary" asChild>
-          <Link href="/product-specs/create">Nova especificação</Link>
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" asChild>
+            <Link href="/parameters/create">Novo Parâmetro</Link>
+          </Button>
+          <Button variant="primary" asChild>
+            <Link href="/product-specs/create">Nova Especificação</Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -82,14 +87,9 @@ export default function ProductSpecsPage() {
       </div>
 
       <Card className="border-slate-900 bg-slate-950/70">
-        <CardHeader className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <CardTitle>Especificações cadastradas</CardTitle>
-            <CardDescription>Produto · parâmetro · limites</CardDescription>
-          </div>
-          <Button variant="outline" asChild>
-            <Link href="/product-specs/create">Adicionar</Link>
-          </Button>
+        <CardHeader>
+          <CardTitle>Especificações Cadastradas</CardTitle>
+          <CardDescription>Produto · Parâmetro · Limites</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>

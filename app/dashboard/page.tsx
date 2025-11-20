@@ -148,10 +148,10 @@ const testsVolume: Record<TestRangeKey, number> = {
 };
 
 const testsRangeLabels: Record<TestRangeKey, string> = {
-  daily: "Last 24h",
-  weekly: "Last 7d",
-  monthly: "Last 30d",
-  yearly: "Year to date",
+  daily: "Últimas 24h",
+  weekly: "Últimos 7d",
+  monthly: "Últimos 30d",
+  yearly: "Acumulado do Ano",
 };
 
 const analystsRanking = [
@@ -211,7 +211,7 @@ const recentLots: LotRow[] = [
   {
     lotCode: "PL-240915-01",
     product: "Cola Zero 350ml",
-    stage: "Finished",
+    stage: "Acabado",
     plant: "Linha PET 2",
     shift: "Noite",
     releaseEta: "3h",
@@ -222,7 +222,7 @@ const recentLots: LotRow[] = [
   {
     lotCode: "PL-240915-04",
     product: "Guaraná Tradicional",
-    stage: "Finished",
+    stage: "Acabado",
     plant: "Linha Lata",
     shift: "Tarde",
     releaseEta: "1h",
@@ -233,7 +233,7 @@ const recentLots: LotRow[] = [
   {
     lotCode: "PL-240915-07",
     product: "Tangerina Light",
-    stage: "Intermediate",
+    stage: "Intermédio",
     plant: "Siropeira B",
     shift: "Manhã",
     releaseEta: "45m",
@@ -244,7 +244,7 @@ const recentLots: LotRow[] = [
   {
     lotCode: "PL-240915-11",
     product: "Chá Pêssego",
-    stage: "Finished",
+    stage: "Acabado",
     plant: "Envase Vidro",
     shift: "Tarde",
     releaseEta: "5h",
@@ -255,7 +255,7 @@ const recentLots: LotRow[] = [
   {
     lotCode: "PL-240915-15",
     product: "Água com gás",
-    stage: "Finished",
+    stage: "Acabado",
     plant: "Linha Lata",
     shift: "Noite",
     releaseEta: "Liberado",
@@ -274,7 +274,7 @@ const lotLabTests: Record<string, LabTest[]> = {
     { parameter: "Açúcar Red.", result: "1.8 g/L", target: "≤2.0", status: "success", analyst: "V. Costa", timestamp: "07:31" },
     { parameter: "Acidez", result: "0.38 %", target: "0.35 ±0.05", status: "success", analyst: "V. Costa", timestamp: "07:35" },
     { parameter: "Micro (30°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "S. Rocha", timestamp: "07:44" },
-    { parameter: "Sensory", result: "Aprovado", target: "Aprovado", status: "success", analyst: "Comitê", timestamp: "08:00" },
+    { parameter: "Sensorial", result: "Aprovado", target: "Aprovado", status: "success", analyst: "Comitê", timestamp: "08:00" },
   ],
   "PL-240915-04": [
     { parameter: "Brix", result: "10.94 °Bx", target: "11.0 ±0.3", status: "warning", analyst: "R. Lima", timestamp: "09:05" },
@@ -284,7 +284,7 @@ const lotLabTests: Record<string, LabTest[]> = {
     { parameter: "Acidez", result: "0.41 %", target: "0.38 ±0.05", status: "success", analyst: "E. Braga", timestamp: "09:20" },
     { parameter: "Micro (30°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "M. Silva", timestamp: "09:45" },
     { parameter: "Micro (45°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "M. Silva", timestamp: "10:05" },
-    { parameter: "Sensory", result: "Observação", target: "Aprovado", status: "warning", analyst: "Painel", timestamp: "10:30" },
+    { parameter: "Sensorial", result: "Observação", target: "Aprovado", status: "warning", analyst: "Painel", timestamp: "10:30" },
   ],
   "PL-240915-07": [
     { parameter: "Sólidos", result: "34.2 %", target: "34 ±1", status: "success", analyst: "D. Barros", timestamp: "11:02" },
@@ -304,7 +304,7 @@ const lotLabTests: Record<string, LabTest[]> = {
     { parameter: "Acidez", result: "0.33 %", target: "0.30 ±0.03", status: "warning", analyst: "P. Melo", timestamp: "13:28" },
     { parameter: "Micro (30°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "M. Costa", timestamp: "13:50" },
     { parameter: "Micro (45°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "M. Costa", timestamp: "14:10" },
-    { parameter: "Sensory", result: "Reprovado", target: "Aprovado", status: "danger", analyst: "Painel", timestamp: "14:40" },
+    { parameter: "Sensorial", result: "Reprovado", target: "Aprovado", status: "danger", analyst: "Painel", timestamp: "14:40" },
   ],
   "PL-240915-15": [
     { parameter: "Condutividade", result: "247 µS/cm", target: "240 ±10", status: "success", analyst: "G. Vieira", timestamp: "06:15" },
@@ -314,7 +314,7 @@ const lotLabTests: Record<string, LabTest[]> = {
     { parameter: "Sódio", result: "9.4 mg/L", target: "≤12", status: "success", analyst: "M. Ramos", timestamp: "06:32" },
     { parameter: "Micro (30°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "C. Silva", timestamp: "06:55" },
     { parameter: "Micro (45°C)", result: "Ausente", target: "Ausente", status: "success", analyst: "C. Silva", timestamp: "07:10" },
-    { parameter: "Sensory", result: "Aprovado", target: "Aprovado", status: "success", analyst: "Painel", timestamp: "07:40" },
+    { parameter: "Sensorial", result: "Aprovado", target: "Aprovado", status: "success", analyst: "Painel", timestamp: "07:40" },
   ],
 };
 
@@ -391,7 +391,7 @@ export default function DashboardPage() {
   const [productFilter, setProductFilter] = useState<string>("all");
   const [selectedLot, setSelectedLot] = useState<LotRow | null>(null);
 
-  const userName = "User";
+  const userName = "Analista";
 
   const filteredProcessData = useMemo(() => {
     const base = parameterSeries[selectedParameter];
@@ -416,9 +416,9 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <section className="grid gap-4 xl:grid-cols-[2fr,1fr]">
         <div className="rounded-[28px] border border-slate-900/80 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8 shadow-[0_20px_80px_rgba(2,6,23,0.65)]">
-          <p className="text-sm text-slate-400">Welcome back,</p>
+          <p className="text-sm text-slate-400">Bem-vindo de volta,</p>
           <h1 className="mt-2 text-4xl font-semibold text-white">{userName}!</h1>
-          <p className="mt-2 text-lg text-slate-300">Here is your SmartLab Quality Overview</p>
+          <p className="mt-2 text-lg text-slate-300">Aqui está o seu Resumo da Qualidade SmartLab</p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {parameterConfigs[selectedParameter] && (
               <div className="rounded-2xl border border-slate-900/80 bg-slate-950/60 p-4">
@@ -470,7 +470,7 @@ export default function DashboardPage() {
           <CardHeader className="px-0">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <CardTitle>Process window</CardTitle>
+                <CardTitle>Janela de Processo</CardTitle>
                 <CardDescription>
                   {parameterConfigs[selectedParameter].label} • {testsRangeLabels.daily}
                 </CardDescription>
@@ -521,9 +521,9 @@ export default function DashboardPage() {
                   strokeWidth={3}
                   dot={{ r: 4 }}
                 />
-                <Line type="monotone" dataKey="target" name="Target" stroke="#22d3ee" strokeDasharray="6 4" strokeWidth={2} />
-                <Line type="monotone" dataKey="lsl" name="LSL" stroke="#fbbf24" strokeDasharray="2 6" strokeWidth={2} />
-                <Line type="monotone" dataKey="usl" name="USL" stroke="#fbbf24" strokeDasharray="2 6" strokeWidth={2} />
+                <Line type="monotone" dataKey="target" name="Alvo" stroke="#22d3ee" strokeDasharray="6 4" strokeWidth={2} />
+                <Line type="monotone" dataKey="lsl" name="LIE" stroke="#fbbf24" strokeDasharray="2 6" strokeWidth={2} />
+                <Line type="monotone" dataKey="usl" name="LSE" stroke="#fbbf24" strokeDasharray="2 6" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -532,15 +532,15 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-6">
           <Card className="rounded-3xl border border-slate-900/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 shadow-[0_25px_80px_rgba(2,6,23,0.45)]">
             <CardHeader className="px-0">
-              <CardTitle>Total Tests</CardTitle>
+              <CardTitle>Total de Análises</CardTitle>
               <CardDescription>{testsRangeLabels[testsRange]}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 px-0">
               <Select value={testsRange} onChange={(event) => setTestsRange(event.target.value as TestRangeKey)}>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
+                <option value="daily">Diário</option>
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensal</option>
+                <option value="yearly">Anual</option>
               </Select>
               <p className="text-5xl font-semibold text-white">{totalTestsValue}</p>
               <p className="text-sm text-slate-400">Ensaios sincronizados com LIMS SmartLab.</p>
@@ -548,7 +548,7 @@ export default function DashboardPage() {
           </Card>
           <Card className="rounded-3xl border border-slate-900/70 bg-slate-950/80 p-6 shadow-[0_20px_70px_rgba(2,6,23,0.45)]">
             <CardHeader className="px-0">
-              <CardTitle>Top 3 Analysts – This Month</CardTitle>
+              <CardTitle>Top 3 Analistas – Mês</CardTitle>
               <CardDescription>Rankeados por análises registradas</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 px-0">
@@ -572,8 +572,8 @@ export default function DashboardPage() {
       <section className="grid gap-6 lg:grid-cols-2">
         <Card className="rounded-3xl border border-slate-900/70 bg-slate-950/70 p-6 shadow-[0_20px_80px_rgba(2,6,23,0.45)]">
           <CardHeader className="px-0">
-            <CardTitle>Product Distribution</CardTitle>
-            <CardDescription>Últimos 24h</CardDescription>
+            <CardTitle>Distribuição de Produtos</CardTitle>
+            <CardDescription>Últimas 24h</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
             <ResponsiveContainer width="100%" height={260}>
@@ -594,7 +594,7 @@ export default function DashboardPage() {
         </Card>
         <Card className="rounded-3xl border border-slate-900/70 bg-slate-950/70 p-6 shadow-[0_20px_80px_rgba(2,6,23,0.45)]">
           <CardHeader className="px-0">
-            <CardTitle>Line Activity</CardTitle>
+            <CardTitle>Atividade das Linhas</CardTitle>
             <CardDescription>Distribuição de status por hora</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
@@ -608,9 +608,9 @@ export default function DashboardPage() {
                   labelStyle={{ color: "#e2e8f0" }}
                 />
                 <Legend wrapperStyle={{ color: "#94a3b8" }} />
-                <Bar dataKey="running" stackId="a" fill="#34d399" name="Running" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="running" stackId="a" fill="#34d399" name="Em produção" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="changeover" stackId="a" fill="#fbbf24" name="Troca" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="downtime" stackId="a" fill="#f87171" name="Downtime" radius={[0, 0, 6, 6]} />
+                <Bar dataKey="downtime" stackId="a" fill="#f87171" name="Parada" radius={[0, 0, 6, 6]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -682,7 +682,7 @@ export default function DashboardPage() {
               <p className="text-sm text-slate-400">Pontos de atenção</p>
               <Input readOnly value="Linha Vidro com variação de CO₂" className="bg-slate-950/60" />
             </div>
-            <p className="text-xs text-slate-500">Última atualização às 07:45 por QA Manager.</p>
+            <p className="text-xs text-slate-500">Última atualização às 07:45 por Gestor de Qualidade.</p>
           </CardContent>
         </Card>
       </section>
@@ -705,7 +705,7 @@ export default function DashboardPage() {
                   <TableHead>Lote</TableHead>
                   <TableHead>Produto</TableHead>
                   <TableHead>Planta / Turno</TableHead>
-                  <TableHead>Compliance</TableHead>
+                  <TableHead>Conformidade</TableHead>
                   <TableHead className="text-right">Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -806,7 +806,7 @@ export default function DashboardPage() {
                   <p>{selectedLot.shift}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Compliance</p>
+                  <p className="text-xs text-slate-500">Conformidade</p>
                   <p>{selectedLot.compliance.toFixed(1)}%</p>
                 </div>
                 <div>

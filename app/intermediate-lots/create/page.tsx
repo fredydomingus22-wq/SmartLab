@@ -97,19 +97,19 @@ export default function CreateIntermediateLotPage() {
         label: "Brix",
         value: brixValue || "—",
         status: resolveStatus(brixNumber, 62.5, 64.5),
-        helper: "Target 63 ±0.5 °Bx",
+        helper: "Alvo 63 ±0.5 °Bx",
       },
       {
         label: "pH",
         value: phValue || "—",
         status: resolveStatus(phNumber, 3.05, 3.25),
-        helper: "Target 3.15 ±0.1",
+        helper: "Alvo 3.15 ±0.1",
       },
       {
         label: "Acidez",
         value: acidezValue ? `${acidezValue}%` : "—",
         status: resolveStatus(acidezNumber, 0.22, 0.32),
-        helper: "Target 0.27 ±0.05%",
+        helper: "Alvo 0.27 ±0.05%",
       },
     ];
   }, [acidezValue, brixValue, phValue]);
@@ -122,8 +122,8 @@ export default function CreateIntermediateLotPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Intermediários · Novo lote</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Registrar lote intermédio</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Produtos Intermédios · Novo Lote</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Registar Lote Intermédio</h1>
           <p className="text-slate-400">
             Configure parâmetros de preparo para liberar o xarope alinhado ao lote pai e PCCs.
           </p>
@@ -133,7 +133,7 @@ export default function CreateIntermediateLotPage() {
             <Link href="/intermediate-lots">Voltar</Link>
           </Button>
           <Button variant="secondary" type="button" onClick={() => reset()}>
-            Limpar campos
+            Limpar Campos
           </Button>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function CreateIntermediateLotPage() {
         <div className="grid gap-6 xl:grid-cols-[3fr,2fr]">
           <Card className="border-slate-900 bg-slate-950/70">
             <CardHeader>
-              <CardTitle>Ficha técnica</CardTitle>
+              <CardTitle>Ficha Técnica</CardTitle>
               <CardDescription>Preencha a composição do lote intermédio.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -192,7 +192,7 @@ export default function CreateIntermediateLotPage() {
                   {errors.acidez && <p className="text-sm text-red-400">{errors.acidez.message}</p>}
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="dataPreparacao">Data de preparação</Label>
+                  <Label htmlFor="dataPreparacao">Data de Preparação</Label>
                   <Input
                     id="dataPreparacao"
                     type="datetime-local"
@@ -212,7 +212,7 @@ export default function CreateIntermediateLotPage() {
                 </p>
               </div>
               <Button type="submit" variant="primary" className="min-w-[200px]" disabled={isSubmitting}>
-                {isSubmitting ? "Registrando..." : "Registrar lote intermédio"}
+                {isSubmitting ? "Registando..." : "Registar Lote Intermédio"}
               </Button>
             </CardFooter>
           </Card>
@@ -220,7 +220,7 @@ export default function CreateIntermediateLotPage() {
           <div className="space-y-6">
             <Card className="border-slate-900/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
               <CardHeader>
-                <CardTitle>Janela de processo</CardTitle>
+                <CardTitle>Janela de Processo</CardTitle>
                 <CardDescription>Validação imediata das principais especificações.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -241,7 +241,7 @@ export default function CreateIntermediateLotPage() {
 
             <Card className="border-slate-900/70 bg-slate-950/60">
               <CardHeader>
-                <CardTitle>Checklist rápido</CardTitle>
+                <CardTitle>Checklist Rápido</CardTitle>
                 <CardDescription>Confirme alinhamento com o lote pai.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">

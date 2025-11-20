@@ -79,10 +79,9 @@ const riskCopy: Record<"low" | "medium" | "high", { label: string; variant: "suc
 };
 
 const categoryOptions = [
-  { value: "all", label: "Todas" },
-  { value: "Base", label: "Base" },
-  { value: "Flavor", label: "Flavor" },
-  { value: "Utility", label: "Utility" },
+  { value: "all", label: "Todas as Categorias" },
+  { value: "matéria-prima", label: "Matéria-Prima" },
+  { value: "embalagem", label: "Material de Embalagem" },
 ];
 
 export default function RawMaterialsPage() {
@@ -108,12 +107,14 @@ export default function RawMaterialsPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Matéria-prima</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Catálogo de materiais</h1>
-          <p className="text-slate-400">Acompanhe specs, risco e certificados em um único painel.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Recursos</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Catálogo de Materiais</h1>
+          <p className="text-slate-400">
+            Acompanhe matérias-primas e materiais de embalagem em um só lugar.
+          </p>
         </div>
         <Button variant="primary" asChild>
-          <Link href="/raw-materials/create">Criar Material</Link>
+          <Link href="/raw-materials/create">Novo Material</Link>
         </Button>
       </div>
 

@@ -109,9 +109,9 @@ export default function CreateSupplierPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Fornecedores · Criação</p>
-          <h1 className="text-3xl font-semibold text-white">Novo fornecedor estratégico</h1>
+          <h1 className="text-3xl font-semibold text-white">Novo Fornecedor Estratégico</h1>
           <p className="text-slate-400">
-            Cadastre parceiros com contexto de categoria, risco e contacto principal.
+            Registe parceiros com contexto de categoria, risco e contacto principal.
           </p>
         </div>
         <div className="flex gap-3">
@@ -119,7 +119,7 @@ export default function CreateSupplierPage() {
             <Link href="/suppliers">Voltar</Link>
           </Button>
           <Button variant="secondary" type="button" onClick={() => reset()}>
-            Resetar
+            Limpar
           </Button>
         </div>
       </div>
@@ -127,7 +127,7 @@ export default function CreateSupplierPage() {
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900 bg-slate-950/70">
           <CardHeader>
-            <CardTitle>Ficha do fornecedor</CardTitle>
+            <CardTitle>Ficha do Fornecedor</CardTitle>
             <CardDescription>Informações críticas para homologação</CardDescription>
           </CardHeader>
           <CardContent>
@@ -203,7 +203,7 @@ export default function CreateSupplierPage() {
                   </p>
                 </div>
                 <Button type="submit" variant="primary" disabled={isSubmitting} className="min-w-[200px]">
-                  {isSubmitting ? "Gravando..." : "Registrar fornecedor"}
+                  {isSubmitting ? "Gravando..." : "Registar Fornecedor"}
                 </Button>
               </CardFooter>
             </form>
@@ -226,7 +226,7 @@ export default function CreateSupplierPage() {
                   <p className="text-base text-white">{item.detail}</p>
                 </div>
                 <Badge variant={item.variant as "success" | "warning"}>
-                  {item.variant === "success" ? "ok" : "pendente"}
+                  {item.variant === "success" ? "OK" : "Pendente"}
                 </Badge>
               </div>
             ))}

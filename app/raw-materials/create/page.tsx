@@ -22,7 +22,9 @@ import { Textarea } from "@/components/ui/textarea";
 
 const schema = z.object({
   nome: z.string().min(3, "Informe o nome do material."),
-  categoria: z.string().min(1, "Selecione a categoria."),
+  categoria: z.enum(["matéria-prima", "embalagem"], {
+    required_error: "Selecione a categoria do material.",
+  }),
   unidade: z.string().min(1, "Informe a unidade."),
   risco: z.enum(["low", "medium", "high"], { required_error: "Selecione o risco." }),
   especificacao: z.string().min(3, "Descreva a especificação."),
@@ -36,7 +38,7 @@ export default function CreateRawMaterialPage() {
     resolver: zodResolver(schema),
     defaultValues: {
       nome: "",
-      categoria: "",
+      categoria: "matéria-prima",
       unidade: "kg",
       risco: "medium",
       especificacao: "",
@@ -71,9 +73,11 @@ export default function CreateRawMaterialPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Matéria-prima</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Cadastrar material</h1>
-          <p className="text-slate-400">Registre specs, risco e documentação para novos ingredientes.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Recursos</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Cadastrar Novo Material</h1>
+          <p className="text-slate-400">
+            Registre matérias-primas ou materiais de embalagem, incluindo specs e risco.
+          </p>
         </div>
         <Button variant="ghost" asChild>
           <Link href="/raw-materials">Voltar</Link>
@@ -93,19 +97,35 @@ export default function CreateRawMaterialPage() {
                 <Input id="nome" placeholder="Açúcar VHP" {...register("nome")} />
                 {errors.nome && <p className="text-sm text-red-400">{errors.nome.message}</p>}
               </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="categoria">Categoria</Label>
-                  <Select id="categoria" {...register("categoria")}>
-                    <option value="">Selecione</option>
-                    <option value="Base">Base</option>
-                    <option value="Flavor">Flavor</option>
-                    <option value="Utility">Utility</option>
-                  </Select>
-                  {errors.categoria && (
-                    <p className="text-sm text-red-400">{errors.categoria.message}</p>
-                  )}
+              <div className="space-y-2">
+                <Label>Categoria do Material</Label>
+                <div className="flex gap-4 pt-2">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      id="cat-mat-prima"
+                      value="matéria-prima"
+                      {...register("categoria")}
+                      className="h-4 w-4 border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500"
+                    />
+                    <Label htmlFor="cat-mat-prima">Matéria-Prima</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      id="cat-embalagem"
+                      value="embalagem"
+                      {...register("categoria")}
+                      className="h-4 w-4 border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500"
+                    />
+                    <Label htmlFor="cat-embalagem">Material de Embalagem</Label>
+                  </div>
                 </div>
+                {errors.categoria && (
+                  <p className="pt-1 text-sm text-red-400">{errors.categoria.message}</p>
+                )}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="unidade">Unidade</Label>
                   <Input id="unidade" placeholder="kg" {...register("unidade")} />

@@ -80,9 +80,9 @@ export default function CreateRawMaterialLotPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Matéria-prima</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">Receber lote de matéria-prima</h1>
-          <p className="text-slate-400">Registre inspeções de recebimento e status de quarentena.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Matéria-Prima</p>
+          <h1 className="mt-2 text-3xl font-semibold text-white">Receber Lote de Matéria-Prima</h1>
+          <p className="text-slate-400">Registe inspeções de recebimento e status de quarentena.</p>
         </div>
         <Button variant="ghost" asChild>
           <Link href="/raw-material-lots">Voltar</Link>
@@ -92,7 +92,7 @@ export default function CreateRawMaterialLotPage() {
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <Card className="border-slate-900 bg-slate-950/70">
           <CardHeader>
-            <CardTitle>Ficha do lote</CardTitle>
+            <CardTitle>Ficha do Lote</CardTitle>
             <CardDescription>Informações mínimas para rastrear o recebimento.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -132,7 +132,7 @@ export default function CreateRawMaterialLotPage() {
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="data">Data de recebimento</Label>
+                  <Label htmlFor="data">Data de Recebimento</Label>
                   <Input id="data" type="datetime-local" {...register("data")} />
                   {errors.data && <p className="text-sm text-red-400">{errors.data.message}</p>}
                 </div>
@@ -154,7 +154,7 @@ export default function CreateRawMaterialLotPage() {
               </div>
               <div className="flex justify-end">
                 <Button type="submit" variant="primary" disabled={isSubmitting}>
-                  {isSubmitting ? "Registrando..." : "Registrar lote"}
+                  {isSubmitting ? "Registando..." : "Registar Lote"}
                 </Button>
               </div>
             </form>
@@ -163,14 +163,14 @@ export default function CreateRawMaterialLotPage() {
 
         <Card className="border-slate-900 bg-slate-950/60">
           <CardHeader>
-            <CardTitle>Status operacional</CardTitle>
+            <CardTitle>Status Operacional</CardTitle>
             <CardDescription>Atualizado conforme o formulário.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-2xl border border-slate-900/80 bg-slate-950/60 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-400">Situação atual</p>
+                  <p className="text-sm text-slate-400">Situação Atual</p>
                   <p className="text-base text-white">{statusCopy[statusValue].label}</p>
                 </div>
                 <Badge variant={statusValue === "bloqueado" ? "danger" : statusValue === "liberado" ? "success" : "warning"}>
@@ -184,7 +184,7 @@ export default function CreateRawMaterialLotPage() {
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li>• Conferir COA anexado</li>
                 <li>• Garantir temperatura de recebimento dentro da faixa</li>
-                <li>• Registrar inspeção visual e lacres</li>
+                <li>• Registar inspeção visual e lacres</li>
               </ul>
             </div>
           </CardContent>
