@@ -1,0 +1,47 @@
+
+> smartlab-app@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3003
+
+ ✓ Starting...
+ ✓ Ready in 2.3s
+ ○ Compiling / ...
+ ⨯ ./app/page.tsx:6:1
+Module not found: Can't resolve '@tanstack/react-table'
+[0m [90m 4 |[39m [36mimport[39m { mockData } [36mfrom[39m [32m'apps/smartlab/mock-api/data'[39m[33m;[39m[0m
+[0m [90m 5 |[39m [36mimport[39m { [33mLot[39m } [36mfrom[39m [32m'apps/smartlab/core/grid/types'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m { createColumnHelper } [36mfrom[39m [32m'@tanstack/react-table'[39m[33m;[39m[0m
+[0m [90m   |[39m [31m[1m^[22m[39m[0m
+[0m [90m 7 |[39m [36mimport[39m { [33mGridCell[39m } [36mfrom[39m [32m'apps/smartlab/components/grid/GridCell'[39m[33m;[39m[0m
+[0m [90m 8 |[39m[0m
+[0m [90m 9 |[39m [36mconst[39m columnHelper [33m=[39m createColumnHelper[33m<[39m[33mLot[39m[33m>[39m()[33m;[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/page.tsx:6:1
+Module not found: Can't resolve '@tanstack/react-table'
+[0m [90m 4 |[39m [36mimport[39m { mockData } [36mfrom[39m [32m'apps/smartlab/mock-api/data'[39m[33m;[39m[0m
+[0m [90m 5 |[39m [36mimport[39m { [33mLot[39m } [36mfrom[39m [32m'apps/smartlab/core/grid/types'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m { createColumnHelper } [36mfrom[39m [32m'@tanstack/react-table'[39m[33m;[39m[0m
+[0m [90m   |[39m [31m[1m^[22m[39m[0m
+[0m [90m 7 |[39m [36mimport[39m { [33mGridCell[39m } [36mfrom[39m [32m'apps/smartlab/components/grid/GridCell'[39m[33m;[39m[0m
+[0m [90m 8 |[39m[0m
+[0m [90m 9 |[39m [36mconst[39m columnHelper [33m=[39m createColumnHelper[33m<[39m[33mLot[39m[33m>[39m()[33m;[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/page.tsx:6:1
+Module not found: Can't resolve '@tanstack/react-table'
+[0m [90m 4 |[39m [36mimport[39m { mockData } [36mfrom[39m [32m'apps/smartlab/mock-api/data'[39m[33m;[39m[0m
+[0m [90m 5 |[39m [36mimport[39m { [33mLot[39m } [36mfrom[39m [32m'apps/smartlab/core/grid/types'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m { createColumnHelper } [36mfrom[39m [32m'@tanstack/react-table'[39m[33m;[39m[0m
+[0m [90m   |[39m [31m[1m^[22m[39m[0m
+[0m [90m 7 |[39m [36mimport[39m { [33mGridCell[39m } [36mfrom[39m [32m'apps/smartlab/components/grid/GridCell'[39m[33m;[39m[0m
+[0m [90m 8 |[39m[0m
+[0m [90m 9 |[39m [36mconst[39m columnHelper [33m=[39m createColumnHelper[33m<[39m[33mLot[39m[33m>[39m()[33m;[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+ GET / 500 in 20115ms
