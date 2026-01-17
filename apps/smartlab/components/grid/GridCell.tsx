@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
 import { Cell, Table } from '@tanstack/react-table';
-import { Lot } from '../../core/grid/types';
-import { appendAudit } from '../../core/grid/audit';
+import { Lot } from 'apps/smartlab/core/grid/types';
+import { appendAudit } from 'apps/smartlab/core/grid/audit';
 
 // Placeholder for permission logic
 const useCanEdit = (row: Lot) => {

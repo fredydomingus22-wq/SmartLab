@@ -9,8 +9,8 @@ import {
   ColumnDef,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useGridState } from '../../core/grid/useGridState';
-import { Lot } from '../../core/grid/types';
+import { useGridState } from 'apps/smartlab/core/grid/useGridState';
+import { Lot } from 'apps/smartlab/core/grid/types';
 
 interface IndustrialGridProps {
   data: Lot[];
